@@ -1,4 +1,8 @@
-import pigpio
+#import pigpio
+from utils import *
+
+#TODO switch to an automated system instead of typing this shit out.
+from rgbModes.FadingCycleMode import *
 
 class rgbController():
     #Pinout
@@ -18,17 +22,42 @@ class rgbController():
     #Colour Mode
     currentMode = None
 
-    def __init__(self):
-        self.pi = pigpio.pi()
+    modes = None
+
+    #Debug
+    testingMode = False
+
+    def __init__(self, testMode):
+        self.testingMode = testMode
+        if not self.testingMode:
+            self.pi = pigpio.pi()
+
+        self.modes = {#NGL i don't like this will change later.
+            "FadingCycle" : FadingCycleMode(self),
+            "Set" : None
+        }
 
     def update(self):
-        pass
+        if self.currentMode == None:
+            self.currentMode = self.modes["FadingCycle"]
+        else:
+            self.currentMode.update()
 
-    def sendToPin(self, pin, brightness):
-	    realBrightness = int(int(brightness) * (float(self.brightness) / 255.0))
-	    self.pi.set_PWM_dutycycle(pin, realBrightness)
+        self.sendToPin(self.RED_PIN, self.r)
+        self.sendToPin(self.GREEN_PIN, self.g)
+        self.sendToPin(self.BLUE_PIN, self.b)
 
-    def stop(self)
+    def sendToPin(self, pin, value):
+        realBrightness = int(int(value) * (float(self.brightness) / 255.0))
+        if not self.testingMode:
+            self.pi.set_PWM_dutycycle(pin, realBrightness)
+        else:
+            print("{pin} set to {level}".format(pin= pin, level= value))
+
+    def stop(self):
+        self.sendToPin(self.RED_PIN, 0)
+        self.sendToPin(self.GREEN_PIN, 0)
+        self.sendToPin(self.BLUE_PIN, 0)
         self.pi.stop()
 
     #Setters

@@ -6,9 +6,19 @@
 #Personal notes:
 #   Pi Pinout: https://learn.sparkfun.com/tutorials/raspberry-gpio/gpio-pinout
 
+from rgbController import *
 
+testMode = True
+closing = False
 
+rgbCont = rgbController(testMode)
 
+while closing == False:
+	rgbCont.update()
+
+rgbCont.stop()
+
+print("Exitting.")
 
 """
 import os
