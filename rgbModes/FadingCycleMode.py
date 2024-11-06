@@ -1,5 +1,6 @@
 from rgbModes.BlankMode import *
 
+#Works fine.
 #Cylces through the colour using a fading effect.
 class FadingCycleMode(Mode):
     stage = 0
