@@ -3,6 +3,7 @@ from utils import *
 
 #TODO switch to an automated system instead of typing this shit out.
 from rgbModes.FadingCycleMode import *
+from rgbModes.RandomMode import *
 
 class rgbController():
     #Pinout
@@ -30,10 +31,12 @@ class rgbController():
     def __init__(self, testMode):
         self.testingMode = testMode
         if not self.testingMode:
+            import pigpio
             self.pi = pigpio.pi()
 
         self.modes = {#NGL i don't like this will change later.
             "FadingCycle" : FadingCycleMode(self),
+            "Random" : RandomMode(self),
             "Set" : None
         }
 
