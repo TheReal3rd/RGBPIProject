@@ -1,9 +1,12 @@
 #import pigpio
-from utils import *
+from Utils import *
+from Settings.Setting import *
 
-#TODO switch to an automated system instead of typing this shit out.
-from rgbModes.FadingCycleMode import *
-from rgbModes.RandomMode import *
+import glob
+import importlib
+import inspect
+import os
+import asyncio
 
 class rgbController():
     #Pinout
@@ -23,7 +26,7 @@ class rgbController():
     #Colour Mode
     currentMode = None
 
-    modes = None
+    modes = {}
 
     #Debug
     testingMode = False
@@ -33,12 +36,7 @@ class rgbController():
         if not self.testingMode:
             import pigpio
             self.pi = pigpio.pi()
-
-        self.modes = {#NGL i don't like this will change later.
-            "FadingCycle" : FadingCycleMode(self),
-            "Random" : RandomMode(self),
-            "Set" : None
-        }
+        self.loadModes()
 
     def update(self):
         if self.currentMode == None:
@@ -55,13 +53,40 @@ class rgbController():
         if not self.testingMode:
             self.pi.set_PWM_dutycycle(pin, realBrightness)
         else:
-            print("{pin} set to {level}".format(pin= pin, level= value))
+            #print("{pin} set to {level}".format(pin= pin, level= value))
+            pass
 
     def stop(self):
         self.sendToPin(self.RED_PIN, 0)
         self.sendToPin(self.GREEN_PIN, 0)
         self.sendToPin(self.BLUE_PIN, 0)
         self.pi.stop()
+
+    #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)
+    #Src: https://stackoverflow.com/questions/3178285/list-classes-in-directory-python
+    def loadModes(self):
+        current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+        current_module_name = os.path.splitext(os.path.basename(current_dir))[0]
+        for file in glob.glob(current_dir + "/rgbModes/*.py"):
+            name = os.path.splitext(os.path.basename(file))[0]
+
+            # Ignore __ files
+            if name.startswith("__"):
+                continue
+            module = importlib.import_module("." + name, package="rgbModes")#package=current_module_name
+
+            for member in dir(module):
+                if not member.endswith("Mode"):
+                    continue
+
+                handlerClass = getattr(module, member)
+
+                if handlerClass and inspect.isclass(handlerClass) and not handlerClass.__name__ == "BlankMode":
+                    mode = handlerClass()
+                    mode.setController(self)
+                    self.modes[mode.getName()] = mode
+          
+
 
     #Setters
 

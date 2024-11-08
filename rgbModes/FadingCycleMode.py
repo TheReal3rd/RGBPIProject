@@ -1,5 +1,5 @@
 from rgbModes.BlankMode import *
-
+from Settings.Setting import *
 #Works fine.
 #Cylces through the colour using a fading effect.
 class FadingCycleMode(Mode):
@@ -10,9 +10,8 @@ class FadingCycleMode(Mode):
     g = 0
     b = 0
 
-    def __init__(self, controller):
-        self.name = "Fading"
-        self.controller = controller
+    def __init__(self):
+        self._name = "FadingCycle"
 
     def update(self):
         if self.stage == 0:

@@ -1,0 +1,1 @@
+#TODO create a visualiser to display what the RGB strip will be doing when in TestMode.
