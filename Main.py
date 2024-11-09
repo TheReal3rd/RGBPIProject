@@ -9,30 +9,31 @@
 
 from rgbController import *
 from CommandLine.CommandManager import *
-#from _thread import start_new_thread
+import os
 
 testMode = True
-closing = False
 
-if not testMode:
-	import os
-	os.system("sudo pigpiod")#Prob wont work cause sudo...
 
-print("RGB Controller started.")
-rgbCont = rgbController(testMode)
+def close(rgbCont, commandLine):
+	rgbCont.stop()
+	os._exit(0)
 
-print("Command Manager started.")
-commandLine = CommandManager(rgbCont)
-commandLine.start()
+if __name__ == "__main__":
+	if not testMode:
+		import os
+		os.system("sudo pigpiod")#Prob wont work cause sudo...
 
-if not testMode:
-	pass
+	print("RGB Controller started.")
+	rgbCont = rgbController(testMode)
 
-while closing == False:
-	rgbCont.update()
+	print("Command Manager started.")
+	commandLine = CommandManager(rgbCont)
+	commandLine.start()
 
-rgbCont.stop()
+	if not testMode:
+		pass
 
-print("Exitting.")
+	while True:
+		rgbCont.update()
 
-#start_new_thread(checkKey, ())
+	print("Exitting.")

@@ -2,14 +2,12 @@
 class CommandBase():
     _name = None
     _description = None
-    _cont = None
 
-    def __init__(self, name, description, controller):
+    def __init__(self, name, description):
         self._name = name
         self._description = description
-        self._cont = controller
 
-    def execute(self, *args):
+    def execute(self, args, rgbController, cmdMan):
         pass
 
     #Getter
@@ -19,4 +17,9 @@ class CommandBase():
 
     def getDescription(self):
         return self._description
+
+    def getHelpMessage(self):
+        return "There is no help message for this command yet."
+
+    #Setter
 

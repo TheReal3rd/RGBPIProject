@@ -40,7 +40,9 @@ class rgbController():
 
     def update(self):
         if self.currentMode == None:
-            self.currentMode = self.modes["FadingCycle"]
+            self.r = 0
+            self.g = 0
+            self.b = 0
         else:
             self.currentMode.update()
 
@@ -60,7 +62,7 @@ class rgbController():
         self.sendToPin(self.RED_PIN, 0)
         self.sendToPin(self.GREEN_PIN, 0)
         self.sendToPin(self.BLUE_PIN, 0)
-        self.pi.stop()
+        #self.pi.close()
 
     #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)
     #Src: https://stackoverflow.com/questions/3178285/list-classes-in-directory-python
@@ -83,10 +85,11 @@ class rgbController():
 
                 if handlerClass and inspect.isclass(handlerClass) and not handlerClass.__name__ == "BlankMode":
                     mode = handlerClass()
+                    if mode.getName() == "BLANK":
+                        continue
                     mode.setController(self)
                     self.modes[mode.getName()] = mode
-          
-
+                    print("Loaded RGBController Mode: {name}".format(name = mode.getName()))
 
     #Setters
 
@@ -107,4 +110,13 @@ class rgbController():
     def setBrightness(self, value):
         self.brightness = clamp(value, 0, 255)
 
+    def setCurrentMode(self, mode):
+        self.currentMode = mode
+
     #Getters
+
+    def getCurrentMode(self):
+        return self.currentMode
+
+    def getModes(self):
+        return self.modes
