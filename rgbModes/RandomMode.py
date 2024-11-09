@@ -10,10 +10,10 @@ class RandomMode(Mode):
 
     def __init__(self):
         self._name = "Random"
-        self.settings = {
+        self.settings = [
             Setting("Delay", "Delay between colour changes.", 0.25, float),
             Setting("FadingTransition", "Linearly transition to the next colour.", False, bool)
-        }
+        ]
 
     def update(self):
         time.sleep(self.settings[0].getValue())
