@@ -9,5 +9,5 @@ class ShutdownCommand(CommandBase):
 
     def execute(self, args, rgbController, cmdMan):
         print("Shutting down...")
-        close(rgbController, cmdMan)
+        close(rgbController)
 

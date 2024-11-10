@@ -21,8 +21,8 @@ class FlashMode(Mode):
 
     def update(self):
         if self.state:
-            self.controller.setColour(settings[0].getValue(), settings[1].getValue(), settings[2].getValue(), 255)
+            self.controller.setColour(self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), self.settings[3].getValue())
         else: 
             self.controller.setColour(0, 0, 0, 0)
         self.state = not self.state
-        time.sleep(settings[4].getValue())
+        time.sleep(self.settings[4].getValue())

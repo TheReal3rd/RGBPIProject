@@ -23,3 +23,6 @@ class Mode():
 
     def setController(self, controller):
         self.controller = controller
+
+    def getSettings(self):
+        return self.settings

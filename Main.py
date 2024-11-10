@@ -9,12 +9,13 @@
 
 from rgbController import *
 from CommandLine.CommandManager import *
+from Visualiser.VisualiserManager import *
 import os
 
 testMode = True
 
 
-def close(rgbCont, commandLine):
+def close(rgbCont):
 	rgbCont.stop()
 	os._exit(0)
 
@@ -30,10 +31,10 @@ if __name__ == "__main__":
 	commandLine = CommandManager(rgbCont)
 	commandLine.start()
 
-	if not testMode:
-		pass
+	if testMode:
+		vm = VisualiserManager(rgbCont)
+		vm.start()
+		rgbCont.setVisuiliser(vm)
 
 	while True:
 		rgbCont.update()
-
-	print("Exitting.")

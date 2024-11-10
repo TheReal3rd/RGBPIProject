@@ -11,7 +11,7 @@ class FadingCycleMode(Mode):
     b = 0
 
     def __init__(self):
-        self._name = "FadingCycle"
+        self._name = "FadingCycleOne"
 
     def update(self):
         if self.stage == 0:

@@ -24,12 +24,13 @@ class CommandManager(threading.Thread):
         while not self.stopping:
             request = input("Command: ")
             args = request.split(" ")
-            command = self.commandDict[args[0].lower()]
-            if command == None:
+            if not args[0] in self.commandDict:
                 print("Command {name} doesn't exist. Check your spelling or use help.".format(name=args[0]))
-            else:
-                print("Executing... {commandReq}".format(commandReq=request))
-                command.execute(args, self.rgbCont, self)
+                continue
+
+            command = self.commandDict[args[0].lower()]
+            print("Executing... {commandReq}".format(commandReq=request))
+            command.execute(args, self.rgbCont, self)
 
     def loadCommands(self):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))

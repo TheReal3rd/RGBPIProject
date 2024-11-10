@@ -2,6 +2,8 @@
 from Utils import *
 from Settings.Setting import *
 
+import time
+
 import glob
 import importlib
 import inspect
@@ -15,8 +17,8 @@ class rgbController():
     BLUE_PIN  = 24
 
     #Colour Modes
-    brightness = 255
-    r = 255.0
+    brightness = 255.0
+    r = 0.0
     g = 0.0
     b = 0.0
 
@@ -30,6 +32,7 @@ class rgbController():
 
     #Debug
     testingMode = False
+    visualiser = None
 
     def __init__(self, testMode):
         self.testingMode = testMode
@@ -39,6 +42,10 @@ class rgbController():
         self.loadModes()
 
     def update(self):
+        if self.testingMode:
+            time.sleep(0.02)
+
+        #print(str(self.r) + " | " + str(self.g) + " | " + str(self.b))
         if self.currentMode == None:
             self.r = 0
             self.g = 0
@@ -54,15 +61,18 @@ class rgbController():
         realBrightness = int(int(value) * (float(self.brightness) / 255.0))
         if not self.testingMode:
             self.pi.set_PWM_dutycycle(pin, realBrightness)
-        else:
-            #print("{pin} set to {level}".format(pin= pin, level= value))
-            pass
 
     def stop(self):
         self.sendToPin(self.RED_PIN, 0)
         self.sendToPin(self.GREEN_PIN, 0)
         self.sendToPin(self.BLUE_PIN, 0)
         #self.pi.close()
+
+    def save(self):
+        pass
+
+    def load(self):
+        pass
 
     #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)
     #Src: https://stackoverflow.com/questions/3178285/list-classes-in-directory-python
@@ -88,7 +98,7 @@ class rgbController():
                     if mode.getName() == "BLANK":
                         continue
                     mode.setController(self)
-                    self.modes[mode.getName()] = mode
+                    self.modes[mode.getName().lower()] = mode
                     print("Loaded RGBController Mode: {name}".format(name = mode.getName()))
 
     #Setters
@@ -97,6 +107,7 @@ class rgbController():
         self.setRed(red)
         self.setGreen(green)
         self.setBlue(blue)
+        self.setBrightness(brightness)
 
     def setRed(self, value):
         self.r = clamp(value, 0, 255)
@@ -113,10 +124,20 @@ class rgbController():
     def setCurrentMode(self, mode):
         self.currentMode = mode
 
+    def setVisuiliser(self, vis):
+        self.visualiser = vis
+
     #Getters
 
     def getCurrentMode(self):
+        self.setColour(0, 0, 0, self.brightness)
         return self.currentMode
 
     def getModes(self):
         return self.modes
+
+    def getColour(self):
+        return (self.r, self.g, self.b)
+
+    def getBrightness(self):
+        return self.brightness
