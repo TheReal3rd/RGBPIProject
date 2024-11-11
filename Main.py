@@ -9,7 +9,6 @@
 
 from rgbController import *
 from CommandLine.CommandManager import *
-from Visualiser.VisualiserManager import *
 import os
 
 testMode = True
@@ -32,6 +31,7 @@ if __name__ == "__main__":
 	commandLine.start()
 
 	if testMode:
+		from Visualiser.VisualiserManager import * #This fixes issues related to having no GUI on the PI
 		vm = VisualiserManager(rgbCont)
 		vm.start()
 		rgbCont.setVisuiliser(vm)

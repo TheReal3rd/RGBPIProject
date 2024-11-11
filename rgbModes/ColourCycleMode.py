@@ -16,7 +16,7 @@ class FadingCycleMode(Mode):
     def __init__(self):
         self._name = "ColourCycle"
         self.settings = [
-            Setting("Delay", "Delay between colour changes.", 0.25, float),
+            Setting("Delay", "Delay between colour changes.", 0.0, float),
             Setting("Brightness", "Brightness of the LED.", 255.0, float)
         ]
 

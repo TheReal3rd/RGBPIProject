@@ -2,8 +2,14 @@ def clamp(value, minValue, maxValue):
     return max(minValue, min(value, maxValue))
 
 
-def moveTowards(value, toValue, step):
-    if value+step > toValue:
-        return toValue
+def moveTowards(value, toValue, step):#TODO maybe create a better version of this.
+    if value < toValue:
+        if value+step >= toValue:
+            return toValue
+        else:
+            return value + step
     else:
-        return value + step
+        if value-step <= toValue:
+            return toValue
+        else:
+            return value - step
