@@ -9,6 +9,7 @@ import importlib
 import inspect
 import os
 import asyncio
+import json
 
 class rgbController():
     #Pinout
@@ -34,12 +35,18 @@ class rgbController():
     testingMode = False
     visualiser = None
 
-    def __init__(self, testMode):
+    def __init__(self, testMode, startWith):
         self.testingMode = testMode
         if not self.testingMode:
             import pigpio
             self.pi = pigpio.pi()
         self.loadModes()
+
+        self.load()
+        self.save()
+
+        if not (startWith == None or startWith == ""):
+            self.currentMode = self.modes[startWith.lower()]
 
     def update(self):
         if self.testingMode:
@@ -69,10 +76,29 @@ class rgbController():
         #self.pi.close()
 
     def save(self):
-        pass
+        for m in self.modes:
+            tempMode = self.modes[m]
+
+            data = {}
+            for x in tempMode.getSettings():
+                data[x.getName()] = x.getValue()
+
+            jsonString = json.dumps(data)
+            with open("ModeSettings/{modeName}Config.json".format(modeName=m), "w") as outfile:
+                outfile.write(jsonString)
 
     def load(self):
-        pass
+        for m in self.modes:
+            tempMode = self.modes[m]
+
+            data = {}
+            with open("ModeSettings/{modeName}Config.json".format(modeName=m)) as jsonFile:
+                data = json.load(jsonFile)
+                    
+            for x in tempMode.getSettings():
+                value = data.get(x.getName())
+                x.setValue(value)
+
 
     #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)
     #Src: https://stackoverflow.com/questions/3178285/list-classes-in-directory-python

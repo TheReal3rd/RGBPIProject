@@ -9,9 +9,36 @@
 
 from rgbController import *
 from CommandLine.CommandManager import *
+from Settings.Setting import *
 import os
+import json
 
 testMode = True
+
+settings = [
+	Setting("OnStartMode", "The mode that starts when the program starts.", "ColourCycle", str)
+]
+
+def save():
+    data = {}
+    for x in settings:
+        data[x.getName()] = x.getValue()
+
+    jsonString = json.dumps(data)
+    with open("config.json", "w") as outfile:
+        outfile.write(jsonString)
+
+def load():
+    data = {}
+    with open("config.json") as jsonFile:
+        data = json.load(jsonFile)
+            
+    for x in settings:
+        value = data.get(x.getName())
+        if value == None:
+            x.setValue(x.getDefaultValue())
+        else:
+            x.setValue(value)
 
 
 def close(rgbCont):
@@ -23,8 +50,15 @@ if __name__ == "__main__":
 		import os
 		os.system("sudo pigpiod")#Prob wont work cause sudo...
 
+	#Config Load / Save
+	print("Loading the settings.")
+	load()
+	save()
+
 	print("RGB Controller started.")
-	rgbCont = rgbController(testMode)
+	rgbCont = rgbController(testMode, settings[0].getValue())
+	rgbCont.load()
+	rgbCont.save()
 
 	print("Command Manager started.")
 	commandLine = CommandManager(rgbCont)

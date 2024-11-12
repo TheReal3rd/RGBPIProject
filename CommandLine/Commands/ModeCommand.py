@@ -24,6 +24,7 @@ class ModeCommand(CommandBase):
                             intValue = int(args[4])
                             setting.setValue(floatValue)
                             print("Mode: {name} - {settingName} set to {newValue}".format(name = currentMode.getName(), settingName = setting.getName(), newValue = intValue))
+                            rgbController.save()
                         except Exception as err:
                             print("Failed to cast the given value to a integer. With error message.\n\n{error}".format(error=err))
 
@@ -32,6 +33,7 @@ class ModeCommand(CommandBase):
                             floatValue = float(args[4])
                             setting.setValue(floatValue)
                             print("Mode: {name} - {settingName} set to {newValue}".format(name = currentMode.getName(), settingName = setting.getName(), newValue = floatValue))
+                            rgbController.save()
                         except Exception as err:
                             print("Failed to cast the given value to a float. With error message.\n\n{error}".format(error=err))
 
@@ -39,9 +41,11 @@ class ModeCommand(CommandBase):
                         if args[4].lower() in ["1", "true"]:
                             setting.setValue(True)
                             print("Mode: {name} - {settingName} set to True".format(name = currentMode.getName(), settingName = setting.getName()))
+                            rgbController.save()
                         elif args[4].lower() in ["0", "false"]:
                             setting.setValue(False)
                             print("Mode: {name} - {settingName} set to False".format(name = currentMode.getName(), settingName = setting.getName()))
+                            rgbController.save()
                         else:
                             print("The given value of {valueArg} is invalid.".format(valueArg=args[4]))
                     else:
