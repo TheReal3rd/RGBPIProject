@@ -9,6 +9,7 @@ import colorsys
 
 #Works fine
 #Flashing colour with colour cycle.
+#Technically wrong as it should use brightness but i like the effect it gives so im keeping it.
 class FlashColourCycleMode(Mode):
     state = False
 
@@ -57,4 +58,4 @@ class FlashColourCycleMode(Mode):
 
                 self.state = True
 
-        self.controller.setColour(self.red, self.green, self.blue, self.settings[1].getValue())
+        self.controller.setColour(self.red, self.green, self.blue, self.settings[0].getValue())

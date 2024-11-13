@@ -3,28 +3,28 @@
 #   https://realpython.com/python-gui-tkinter/
 #   https://stackoverflow.com/questions/51591456/can-i-use-rgb-in-tkinter
 
-#TODO Fix the label thingy. But i may switch to using pygame.
+#TODO Add a TKinter and pygame vis allow the user to select and fallbacks.
 
-from tkinter import *
 import _thread
 import threading
 import time
 
 
 #Working but incomplete.
-class VisualiserManager(threading.Thread):
+class VisualiserManagerTK(threading.Thread):
     _controller = None
 
     _window = None
 
-    headerText = "RGB Controller Visuliser | Mode: {modeName} | Colour: ({r},{g},{b})"
+    headerText = "RGB Controller Visualiser | Mode: {modeName} | Colour: ({r},{g},{b})"
 
     def __init__(self, controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._controller = controller
 
     def run(self):
-        self._window = Tk()
+        import tkinter as tk
+        self._window = tk.Tk()
         window = self._window
 
         #Setup window sizing.
@@ -44,7 +44,7 @@ class VisualiserManager(threading.Thread):
 
         window.protocol("WM_DELETE_WINDOW", onClose)
 
-        canvas = Canvas(window, width = 1280, height = 720, bg="black")
+        canvas = tk.Canvas(window, width = 1280, height = 720, bg="black")
         canvas.pack()
 
         while True:

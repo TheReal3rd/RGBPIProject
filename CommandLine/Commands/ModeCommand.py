@@ -71,7 +71,7 @@ class ModeCommand(CommandBase):
                 for x in rgbController.getModes():
                     print("-{name}".format(name = x))
                 return
-            elif args[1] in ["set","settings"]:# View settings in the current mode.
+            elif args[1] in ["settings"]:# View settings in the current mode.
                 currentMode = rgbController.getCurrentMode()
                 if currentMode == None:
                     print("There is no mode running on the RGB Controller currently.")

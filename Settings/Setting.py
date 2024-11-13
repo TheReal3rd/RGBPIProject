@@ -3,6 +3,7 @@
 class Setting():
     _name = None 
     _value = None
+    _defaultValue = None
     _valueType = None
     _description = None
 
@@ -10,6 +11,7 @@ class Setting():
         self._name = name
         self._description = description
         self._value = value
+        self._defaultValue = value
         self._valueType = valueType
 
     #Getters
@@ -25,6 +27,8 @@ class Setting():
     def getValueType(self):
         return self._valueType
 
+    def getDefaultValue(self):
+        return self._defaultValue
     #Setters
 
     def setValue(self, newValue):

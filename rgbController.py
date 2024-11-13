@@ -52,7 +52,6 @@ class rgbController():
         if self.testingMode:
             time.sleep(0.02)
 
-        #print(str(self.r) + " | " + str(self.g) + " | " + str(self.b))
         if self.currentMode == None:
             self.r = 0
             self.g = 0
@@ -90,14 +89,20 @@ class rgbController():
     def load(self):
         for m in self.modes:
             tempMode = self.modes[m]
+            fileName = "ModeSettings/{modeName}Config.json".format(modeName=m)
+            if not os.path.isfile(fileName):
+                continue
 
             data = {}
-            with open("ModeSettings/{modeName}Config.json".format(modeName=m)) as jsonFile:
+            with open(fileName) as jsonFile:
                 data = json.load(jsonFile)
                     
             for x in tempMode.getSettings():
                 value = data.get(x.getName())
-                x.setValue(value)
+                if value == None:
+                    x.setValue(x.getDefaultValue())
+                else:
+                    x.setValue(value)
 
 
     #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)
