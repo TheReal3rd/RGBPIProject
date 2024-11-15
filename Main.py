@@ -44,6 +44,9 @@ def load():
         else:
             x.setValue(value)
 
+def getMainSettings():
+	return settings
+
 
 def close(rgbCont):
 	rgbCont.stop()

@@ -1,13 +1,37 @@
+<!-- $$$$$$\                  $$\-->
+<!--$$ ___$$\                 $$ |-->
+<!--\_/   $$ | $$$$$$\   $$$$$$$ |-->
+<!--  $$$$$ / $$  __$$\ $$  __$$ |-->
+<!--  \___$$\ $$ |  \__|$$ /  $$ |-->
+<!--$$\   $$ |$$ |      $$ |  $$ |-->
+<!--\$$$$$$  |$$ |      \$$$$$$$ |-->
+<!-- \______/ \__|       \_______|-->
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>RGB PI Web Panel</title>
     </head>
     <body>
-        <h1> Status </h1>
-        <p> TODO add status info </p>
+        <div>
+            <h1> Status </h1>
+            <p> Current Mode: [CurrentMode] </p>
 
-        <h1> Control </h1>
-        <p> TODO add status info </p>
+        </div>
+        <div>
+            <h1> Control </h1>
+            <form action="/ModeChange.html">
+                <select id="modeSelect" name="modeSelect">
+                    [AvailableModes]
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+
+            <h2> Settings: </h2>
+            <ul>
+                <li>Setting 1</li>
+                <li>Setting 2</li>
+                <li>Setting 3</li>
+            </ul>
+        </div>
     </body>
 </html>

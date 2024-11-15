@@ -1,6 +1,7 @@
 #import pigpio
 from Utils import *
 from Settings.Setting import *
+from Main import getMainSettings, save
 
 import time
 
@@ -153,6 +154,9 @@ class rgbController():
         self.brightness = clamp(value, 0, 255)
 
     def setCurrentMode(self, mode):
+        mainSet = getMainSettings()
+        mainSet[0].setValue(mode.getName())
+        save()
         self.currentMode = mode
 
     def setVisuiliser(self, vis):
