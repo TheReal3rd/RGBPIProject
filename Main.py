@@ -20,7 +20,9 @@ settings = [
 	Setting("OnStartMode", "The mode that starts when the program starts.", "ColourCycle", str),#0
 	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),#1
 	Setting("UseCommand", "Enable or disable the command system.", True, bool),#2
-	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool)#3
+	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),#3
+	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),#4
+	Setting("WebPort", "Webpanel port.", 8080, int)#5
 ]
 
 def save():
@@ -46,7 +48,6 @@ def load():
 
 def getMainSettings():
 	return settings
-
 
 def close(rgbCont):
 	rgbCont.stop()
@@ -74,12 +75,12 @@ if __name__ == "__main__":
 
 	if testMode and settings[1].getValue():
 		from Visualiser.VisualiserManager import * #This fixes issues related to having no GUI on the PI
-		vm = VisualiserManagerTK(rgbCont)
+		vm = VisualiserManagerPygame(rgbCont)
 		vm.start()
 		rgbCont.setVisuiliser(vm)
 
 	if settings[3].getValue():
-		webPanel = WebpanelManager(rgbCont)
+		webPanel = WebpanelManager(rgbCont, settings[4].getValue(), settings[5].getValue())
 		webPanel.start()
 
 	while True:

@@ -35,6 +35,8 @@ class CommandManager(threading.Thread):
     def loadCommands(self):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
         current_module_name = os.path.splitext(os.path.basename(current_dir))[0]
+        loadedNameList = []
+
         for file in glob.glob(current_dir + "/Commands/*.py"):
             name = os.path.splitext(os.path.basename(file))[0]
 
@@ -49,7 +51,9 @@ class CommandManager(threading.Thread):
                 if handlerClass and inspect.isclass(handlerClass) and not handlerClass.__name__ == "CommandBase":
                     command = handlerClass()
                     self.commandDict[command.getName().lower()] = command
-                    print("Loaded CommandManager Command: {name}".format(name = command.getName()))
+                    loadedNameList.append(command.getName())
+        
+        print("Loaded CommandManager Commands: {names}".format(names = loadedNameList))
 
     #Getter
 

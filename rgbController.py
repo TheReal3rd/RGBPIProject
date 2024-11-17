@@ -111,6 +111,9 @@ class rgbController():
     def loadModes(self):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
         current_module_name = os.path.splitext(os.path.basename(current_dir))[0]
+
+        loadedModesList = []
+
         for file in glob.glob(current_dir + "/rgbModes/*.py"):
             name = os.path.splitext(os.path.basename(file))[0]
 
@@ -131,7 +134,9 @@ class rgbController():
                         continue
                     mode.setController(self)
                     self.modes[mode.getName().lower()] = mode
-                    print("Loaded RGBController Mode: {name}".format(name = mode.getName()))
+                    loadedModesList.append(mode.getName())
+
+        print("Loaded RGBController Modes: {names}".format(names = loadedModesList))
 
     #Setters
 
@@ -156,6 +161,12 @@ class rgbController():
     def setCurrentMode(self, mode):
         mainSet = getMainSettings()
         mainSet[0].setValue(mode.getName())
+        
+        if self.visualiser != None:
+            name = "None"
+            if mode != None:
+                name = mode.getName()
+            self.visualiser.updateMode(name) 
         save()
         self.currentMode = mode
 

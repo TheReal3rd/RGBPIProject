@@ -121,13 +121,18 @@ class WebpanelManager(threading.Thread):
     _controller = None
     _webserver = None
 
-    def __init__(self, controller, *args, **kwargs):
+    _serverAddress = "localhost"
+    _serverPort = 8080
+
+    def __init__(self, controller, serverAddress, serverPort, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._controller = controller
+        self._serverAddress = serverAddress
+        self._serverPort = serverPort
 
     def run(self):
-        hostName = "localhost"
-        serverPort = 8080
+        hostName = self._serverAddress
+        serverPort = self._serverPort
 
         handler = partial(WebServer, self._controller)
 

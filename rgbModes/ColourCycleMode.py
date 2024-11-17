@@ -3,7 +3,7 @@ from Settings.Setting import *
 
 import math
 import time
-import colorsys
+import colorsys # https://davis.lbl.gov/Manuals/PYTHON/library/colorsys.html
 
 #Perfect!
 #Cycles through the colours with no black.

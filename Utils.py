@@ -13,3 +13,6 @@ def moveTowards(value, toValue, step):#TODO maybe create a better version of thi
             return toValue
         else:
             return value - step
+
+def rgbInvert(red, green, blue):
+    return (255-red, 255-green, 255-blue)
