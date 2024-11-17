@@ -13,25 +13,20 @@
     </head>
     <body>
         <div>
-            <h1> Status </h1>
-            <p> Current Mode: [CurrentMode] </p>
-
+            <h1> [SettingName] </h1>
+            <p> Current Value: [SettingValue] </p>
+            <p> Setting Value Type: [SettingValueType] </p>
+            <p> Setting Description: [SettingDesc] </p>
         </div>
         <div>
-            <h1> Control </h1>
-            <form action="/ModeChange">
-                <select id="modeSelect" name="modeSelect">
-                    [AvailableModes]
-                </select>
+            <form action="/changeSetting">
+                <label for="settingName" hidden></label>
+                <input type="text" id="settingName" name="settingName" value="[SettingName]" hidden>
+                <label for="newValue">New Value:</label>
+                <input type="text" id="newValue" name="newValue" value="[SettingValue]">
                 <button type="submit">Submit</button>
             </form>
-
-            <h2> Settings: </h2>
-            <ul>
-                [ModeSettings]
-            </ul>
         </div>
-
         <footer>
             <p> RGB Pi Project. Created by 3rd. </p>
         </footer>

@@ -26,7 +26,7 @@ class FlashColourCycleMode(Mode):
     def __init__(self):
         self._name = "FlashColourCycle"
         self.settings = [
-            Setting("Bightness", "How bright the colours will be.", 255, float),
+            Setting("Brightness", "How bright the colours will be.", 255, float),
             Setting("StepSpeed", "The speed it transitions.", 5, float),
             Setting("CycleSpeed", "The cycle speed colour transitions.", 25, float)
         ]

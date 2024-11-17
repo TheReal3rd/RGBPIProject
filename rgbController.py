@@ -160,7 +160,10 @@ class rgbController():
 
     def setCurrentMode(self, mode):
         mainSet = getMainSettings()
-        mainSet[0].setValue(mode.getName())
+        if mode == None:
+            mainSet[0].setValue("None")
+        else:
+            mainSet[0].setValue(mode.getName())
         
         if self.visualiser != None:
             name = "None"

@@ -1,1 +1,1 @@
-{"OnStartMode": "ColourCycle", "UseVisualiser": true, "UseCommand": true, "UseWebpanel": true, "WebAddress": "rgbpi.third.net", "WebPort": 8080}
+{"OnStartMode": "Random", "UseVisualiser": true, "UseCommand": true, "UseWebpanel": true, "WebAddress": "dev.third.net", "WebPort": 8080}

@@ -16,6 +16,7 @@ class WebServer(BaseHTTPRequestHandler):
 
     _indexPage = None 
     _redirectPage = None
+    _settingEditPage = None
 
     _redirectURL = "/"
     _redirectMessage = "Wasn't filled in. :/"
@@ -30,6 +31,8 @@ class WebServer(BaseHTTPRequestHandler):
         self._indexPage = reader.read()
         reader = open("WebPanel/HTML/redirect.html", "r")
         self._redirectPage = reader.read()
+        reader = open("WebPanel/HTML/settingEdit.html", "r")
+        self._settingEditPage = reader.read()
 
         self._pagesLoaded = True
 
@@ -48,13 +51,13 @@ class WebServer(BaseHTTPRequestHandler):
                     continue
                 params[splitOne[0]] = splitOne[1]
 
-        if cleanPath in ["/", "/index.html"]:
+        if cleanPath in ["/", "/index", "/index.html"]:
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
             self.wfile.write(bytes(self.replacements(self._indexPage), "utf-8"))
 
-        elif cleanPath in ["/ModeChange.html"]:
+        elif cleanPath in ["/ModeChange"]:
             #Changes the Mode
             if len(params) != 0:
                 newMode = params["modeSelect"]
@@ -71,9 +74,88 @@ class WebServer(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self._redirectURL = "/index.html"
+            self._redirectURL = "/index"
             self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
 
+        elif cleanPath in ["/SettingEdit"]:
+            failure = False
+            failMessage = "Some internal issue."
+            setting = None
+  
+            if len(params) != 0:
+                mode = self._controller.getCurrentMode()
+                if mode == None:
+                    failure = True
+                    failMessage = "No mode currently loaded."
+                else:
+                    if "settingName" in params.keys():
+                        setting = mode.getSetting(params["settingName"])
+                    else:
+                        failure = True
+                        failMessage = "Invalid paramter provided."
+            else:
+                failure = True
+                failMessage = "Missing paramaters to use this page."
+
+            #Do reply
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            if failure:
+                self._redirectMessage = failMessage
+                self._redirectURL = "/index"
+                self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
+            else:
+                if setting != None:
+                    customReplacements = {}
+                    customReplacements["[SettingName]"] = setting.getName()
+                    customReplacements["[SettingValue]"] = str(setting.getValue())
+                    customReplacements["[SettingValueType]"] = str(setting.getValueType().__name__)
+                    customReplacements["[SettingDesc]"] = setting.getDescription()
+
+
+                self.wfile.write(bytes(self.replacements(self._settingEditPage, customReplacements), "utf-8"))
+
+        elif cleanPath in ["/changeSetting"]:
+            message = "Internal error."
+
+            if len(params) != 0:
+                mode = self._controller.getCurrentMode()
+                if mode == None:
+                    message = "No mode currently loaded."
+
+                else:
+                    if "settingName" in params.keys() and "newValue" in params.keys():
+                        setting = mode.getSetting(params["settingName"])
+                        try:
+                            newValue = params["newValue"]
+                            valueType = setting.getValueType()
+                            if valueType == bool:
+                                if newValue == "True":
+                                    setting.setValue(True)
+                                else:
+                                    setting.setValue(False)
+
+                            else:
+                                setting.setValue(valueType(newValue))
+
+                            message = "The value has successfully been changed."
+                        except Exception as err:
+                            print(err)
+                            message = "Provided value throw an exception. Check you entries."
+                    else:
+                        message = "Invalid paramter provided."
+            else:
+                message = "Missing paramaters to use this page."
+           
+
+            #Do replay
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self._redirectMessage = message
+            self._redirectURL = "/index"
+            self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
         else:
             self.send_response(404)
             self.send_header("Content-type", "text/html")
@@ -82,7 +164,7 @@ class WebServer(BaseHTTPRequestHandler):
             self._redirectURL = "/index.html"
             self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
 
-    def replacements(self, htmlIn):
+    def replacements(self, htmlIn, customReplacements={}):
         controller = self._controller
         if controller == None:
             print("Controller failed to be fetched.")
@@ -109,6 +191,21 @@ class WebServer(BaseHTTPRequestHandler):
                 result += '<option value="{simpleMode}">{name}</option>'.format(simpleMode=temp.getName().lower(), name=temp.getName())
             htmlIn = htmlIn.replace("[AvailableModes]", result)
         
+        if htmlIn.find("[ModeSettings]") != -1:
+            result = ""
+            if controller.getCurrentMode() == None:
+                result = "None"
+            else:
+                for s in controller.getCurrentMode().getSettings():
+                    result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p>{SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
+                    
+            htmlIn = htmlIn.replace("[ModeSettings]", result)
+
+        for custom in customReplacements:
+            replacement = customReplacements[custom]
+            if htmlIn.find(custom) != -1:
+                htmlIn = htmlIn.replace(custom, replacement)
+
         return htmlIn
 
     #def do_POST(self):
