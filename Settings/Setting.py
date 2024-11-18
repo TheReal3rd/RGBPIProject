@@ -29,16 +29,9 @@ class Setting():
 
     def getDefaultValue(self):
         return self._defaultValue
+        
     #Setters
-
     def setValue(self, newValue):
         self._value = newValue
 
-    #Data
-
-    def save(self):
-        pass
-
-    def load(self):
-        pass
     

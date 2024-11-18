@@ -10,6 +10,7 @@ This script provides multiple modes and settings for those modes. The modes prov
 - Settings.
 - Controller.
 - Visualiser.
+- Webpanel.
 
 I am planning to add a web server to control the program remotely.
 

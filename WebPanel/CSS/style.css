@@ -1,0 +1,43 @@
+body {
+    background-color: rgba(44, 44, 44, 0.61);
+}
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: 0;
+}
+
+.footer-text {
+    text-align: center;
+    color: white;
+    font-family: sans-serif;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.gradient-text {
+    outline: none;
+    background: linear-gradient(to right, blueviolet 0%, purple 25%, red 50%,purple 75%, blueviolet 100%);
+    background-size: 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate 10s ease-in infinite;
+}
+
+@keyframes animate {
+    to{
+      background-position: 400%;
+    }
+}
+
+#footer {
+    bottom: 0;
+    width: 100%;
+}

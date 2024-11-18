@@ -1,6 +1,7 @@
 #Sources:
 #   https://pythonbasics.org/webserver/
 #   https://stackoverflow.com/questions/21631799/how-can-i-pass-parameters-to-a-requesthandler
+#   https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7 #For post request handling.
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from functools import partial
@@ -18,6 +19,8 @@ class WebServer(BaseHTTPRequestHandler):
     _redirectPage = None
     _settingEditPage = None
 
+    _styleSheet = None
+
     _redirectURL = "/"
     _redirectMessage = "Wasn't filled in. :/"
 
@@ -33,6 +36,8 @@ class WebServer(BaseHTTPRequestHandler):
         self._redirectPage = reader.read()
         reader = open("WebPanel/HTML/settingEdit.html", "r")
         self._settingEditPage = reader.read()
+        reader = open("WebPanel/CSS/style.css", "r")
+        self._styleSheet = reader.read()
 
         self._pagesLoaded = True
 
@@ -56,6 +61,12 @@ class WebServer(BaseHTTPRequestHandler):
             self.send_header("Content-type", "text/html")
             self.end_headers()
             self.wfile.write(bytes(self.replacements(self._indexPage), "utf-8"))
+
+        elif cleanPath in ["/style"]:
+            self.send_response(200)
+            self.send_header("Content-type", "text/css")
+            self.end_headers()
+            self.wfile.write(bytes(self._styleSheet, "utf-8"))
 
         elif cleanPath in ["/ModeChange"]:
             #Changes the Mode
@@ -208,12 +219,10 @@ class WebServer(BaseHTTPRequestHandler):
 
         return htmlIn
 
-    #def do_POST(self):
+    #def do_POST(self):#Should idealy use post request to handle changes. But i can't be arsed too. As this panel is intended to be used in a local network. for personal use i feel i don't need to.
     #    contentLength = int(self.headers["Content-Length"])
     #    postData = self.rfile.read(contentLength).decode("utf-8")
 
-#47
-#Working but incomplete.
 class WebpanelManager(threading.Thread):
     _controller = None
     _webserver = None

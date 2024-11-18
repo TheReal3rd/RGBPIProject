@@ -4,7 +4,7 @@
 #   https://stackoverflow.com/questions/51591456/can-i-use-rgb-in-tkinter
 #   https://realpython.com/pygame-a-primer/
 
-#TODO Add a TKinter and pygame vis allow the user to select and fallbacks.
+#TODO Add fallbacks.
 from Utils import *
 import _thread
 import threading

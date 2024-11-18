@@ -1,7 +1,7 @@
 #import pigpio
 from Utils import *
 from Settings.Setting import *
-from Main import getMainSettings, save
+from Main import getMainSettings, saveMain
 
 import time
 
@@ -47,7 +47,11 @@ class rgbController():
         self.save()
 
         if not (startWith == None or startWith == ""):
-            self.currentMode = self.modes[startWith.lower()]
+            tempMode = self.modes[startWith.lower()]
+            if not tempMode == None:
+                self.currentMode = tempMode
+            else:
+                self.currentMode = self.modes["Off"]
 
     def update(self):
         if self.testingMode:
@@ -78,6 +82,8 @@ class rgbController():
     def save(self):
         for m in self.modes:
             tempMode = self.modes[m]
+            if len(tempMode.getSettings()) <= 0:
+                continue
 
             data = {}
             for x in tempMode.getSettings():
@@ -90,6 +96,9 @@ class rgbController():
     def load(self):
         for m in self.modes:
             tempMode = self.modes[m]
+            if len(tempMode.getSettings()) <= 0:
+                continue
+
             fileName = "ModeSettings/{modeName}Config.json".format(modeName=m)
             if not os.path.isfile(fileName):
                 continue
@@ -170,7 +179,8 @@ class rgbController():
             if mode != None:
                 name = mode.getName()
             self.visualiser.updateMode(name) 
-        save()
+        
+        #saveMain()#Saving here causes saves to get corrupted.
         self.currentMode = mode
 
     def setVisuiliser(self, vis):

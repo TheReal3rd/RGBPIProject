@@ -12,6 +12,7 @@ from CommandLine.CommandManager import *
 from Settings.Setting import *
 from WebPanel.WebPanelManager import *
 import os
+import os.path
 import json
 
 testMode = True
@@ -25,33 +26,42 @@ settings = [
 	Setting("WebPort", "Webpanel port.", 8080, int)#5
 ]
 
-def save():
-    data = {}
-    for x in settings:
-        data[x.getName()] = x.getValue()
+def saveMain():
+	print("Save")
+	data = {}
+	for x in settings:
+		data[x.getName()] = x.getValue()
+		
+	jsonString = json.dumps(data)
+	with open("config.json", "w") as outfile:
+		outfile.write(jsonString)
 
-    jsonString = json.dumps(data)
-    with open("config.json", "w") as outfile:
-        outfile.write(jsonString)
 
-def load():
-    data = {}
-    with open("config.json") as jsonFile:
-        data = json.load(jsonFile)
-            
-    for x in settings:
-        value = data.get(x.getName())
-        if value == None:
-            x.setValue(x.getDefaultValue())
-        else:
-            x.setValue(value)
+def loadMain():
+	print("Load")
+	data = {}
+	with open("config.json", "r") as jsonFile:
+		data = json.load(jsonFile)
+    
+	for x in settings:
+		value = data.get(x.getName())
+		
+		try:
+			valueType = x.getValueType()
+			x.setValue(valueType(value))
+		except Exception as err:
+			x.setValue(x.getDefaultValue())
+			print("{SettingName} has been reset".format(SettingName=x.getName()))
 
 def getMainSettings():
 	return settings
 
 def close(rgbCont):
+	#saveMain()
+	rgbCont.save()
 	rgbCont.stop()
 	os._exit(0)
+
 
 if __name__ == "__main__":
 	if not testMode:
@@ -59,10 +69,12 @@ if __name__ == "__main__":
 
 	#Config Load / Save
 	print("Loading the settings.")
-	if os.path.isfile("config.json"):
-		load()
-	save()
+	if not os.path.isfile("config.json"):
+		saveMain()
+	else:
+		loadMain()
 
+	
 	print("RGB Controller started.")
 	rgbCont = rgbController(testMode, settings[0].getValue())
 	rgbCont.load()

@@ -64,7 +64,8 @@ class ModeCommand(CommandBase):
 
         if len(args) == 2:#Stop the current mode.
             if args[1] in ["s","stop"]:
-                rgbController.setCurrentMode(None)
+                mode = rgbController.getModes()["off"]
+                rgbController.setCurrentMode(mode)
                 return
             elif args[1] in ["l", "list"]:
                 print("Listing all available modes...")
