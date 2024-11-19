@@ -12,10 +12,11 @@
         <title>RGB PI Web Panel</title>
         <meta http-equiv="refresh" content="1; url='[RedirectURL]'" />
         <link rel="stylesheet" href="/style">
+        <meta name="viewport" content="width=1280, initial-scale=1">
     </head>
     <body>
-        <div>
-            <p> You're being redirected... [RedirectMessage] </p>
+        <div class="content">
+            <p class="centerText"> You're being redirected... [RedirectMessage] </p>
         </div>
 
         <footer>
@@ -23,5 +24,11 @@
                 <p class="footer-text gradient-text"> RGB Pi Project. Created by 3rd. </p>
             </div>
         </footer>
+        <script>
+            var siteWidth = 500;
+            var scale = screen.width /siteWidth;
+
+            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width='+siteWidth+', initial-scale='+scale+'');
+        </script>
     </body>
 </html>

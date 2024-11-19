@@ -2,9 +2,11 @@
 #   https://pythonbasics.org/webserver/
 #   https://stackoverflow.com/questions/21631799/how-can-i-pass-parameters-to-a-requesthandler
 #   https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7 #For post request handling.
+#   https://search.brave.com/search?q=html+scale+everything+bigger+when+on+phone&source=web&summary=1&summary_og=5217f18885f2abcceb2171
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from functools import partial
+from Utils import fetchDeviceTemps
 
 import _thread
 import threading
@@ -175,7 +177,7 @@ class WebServer(BaseHTTPRequestHandler):
             self._redirectURL = "/index.html"
             self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
 
-    def replacements(self, htmlIn, customReplacements={}):
+    def replacements(self, htmlIn, customReplacements={}):#TODO okay now make this a bit more cleaner look how to make func vars so we can store them in a dict.
         controller = self._controller
         if controller == None:
             print("Controller failed to be fetched.")
@@ -195,6 +197,9 @@ class WebServer(BaseHTTPRequestHandler):
         if htmlIn.find("[RedirectMessage]") != -1:
             htmlIn = htmlIn.replace("[RedirectMessage]", self._redirectMessage)
 
+        if htmlIn.find("[CurrentTemp]") != -1:
+            htmlIn = htmlIn.replace("[CurrentTemp]", fetchDeviceTemps())
+
         if htmlIn.find("[AvailableModes]") != -1:
             result = ""
             for m in controller.getModes():
@@ -208,7 +213,7 @@ class WebServer(BaseHTTPRequestHandler):
                 result = "None"
             else:
                 for s in controller.getCurrentMode().getSettings():
-                    result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p>{SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
+                    result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
                     
             htmlIn = htmlIn.replace("[ModeSettings]", result)
 

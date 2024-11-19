@@ -11,28 +11,37 @@
     <head>
         <title>RGB PI Web Panel</title>
         <link rel="stylesheet" href="/style">
+        <meta name="viewport" content="width=1280, initial-scale=1">
     </head>
     <body>
-        <div>
-            <h1> [SettingName] </h1>
-            <p> Current Value: [SettingValue] </p>
-            <p> Setting Value Type: [SettingValueType] </p>
-            <p> Setting Description: [SettingDesc] </p>
-        </div>
-        <div>
-            <form action="/changeSetting">
-                <label for="settingName" hidden></label>
-                <input type="text" id="settingName" name="settingName" value="[SettingName]" hidden>
-                <label for="newValue">New Value:</label>
-                <input type="text" id="newValue" name="newValue" value="[SettingValue]">
-                <button type="submit">Submit</button>
-            </form>
+        <div class="content">
+            <div>
+                <h1> [SettingName] </h1>
+                <p> Current Value: [SettingValue] </p>
+                <p> Setting Value Type: [SettingValueType] </p>
+                <p> Setting Description: [SettingDesc] </p>
+            </div>
+            <div>
+                <form action="/changeSetting">
+                    <label for="settingName" hidden></label>
+                    <input type="text" id="settingName" name="settingName" value="[SettingName]" hidden>
+                    <label for="newValue">New Value:</label>
+                    <input type="text" id="newValue" name="newValue" value="[SettingValue]">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
         <footer>
             <div class="footer">
                 <p class="footer-text gradient-text"> RGB Pi Project. Created by 3rd. </p>
             </div>
         </footer>
+        <script>
+            var siteWidth = 500;
+            var scale = screen.width /siteWidth;
+
+            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width='+siteWidth+', initial-scale='+scale+'');
+        </script>
     </body>
 
 </html>

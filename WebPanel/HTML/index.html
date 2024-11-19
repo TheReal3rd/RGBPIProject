@@ -11,32 +11,40 @@
     <head>
         <title>RGB PI Web Panel</title>
         <link rel="stylesheet" href="/style">
+        <meta name="viewport" content="width=1280, initial-scale=1">
     </head>
     <body>
-        <div>
-            <h1> Status </h1>
-            <p> Current Mode: [CurrentMode] </p>
-        </div>
-        <div>
-            <h1> Control </h1>
-            <form action="/ModeChange">
-                <select id="modeSelect" name="modeSelect">
-                    [AvailableModes]
-                </select>
-                <button type="submit">Submit</button>
-            </form>
+        <div class="content">
+            <div>
+                <h1> Status </h1>
+                <p> Current Mode: [CurrentMode] </p>
+                <p> Device Temp: [CurrentTemp] </p>
+            </div>
+            <div>
+                <h1> Control </h1>
+                <form action="/ModeChange">
+                    <select id="modeSelect" name="modeSelect">
+                        [AvailableModes]
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
 
-            <h2> Settings: </h2>
-            <ul>
-                [ModeSettings]
-            </ul>
+                <h2> Settings: </h2>
+                <ul>
+                    [ModeSettings]
+                </ul>
+            </div>
         </div>
-
         <footer>
             <div class="footer">
                 <p class="footer-text gradient-text"> RGB Pi Project. Created by 3rd. </p>
             </div>
         </footer>
-    </body>
+        <script>
+            var siteWidth = 500;
+            var scale = screen.width /siteWidth;
 
+            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width='+siteWidth+', initial-scale='+scale+'');
+        </script>
+    </body>
 </html>

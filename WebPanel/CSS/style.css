@@ -1,7 +1,44 @@
 body {
-    background-color: rgba(44, 44, 44, 0.61);
+    background-color: rgb(0, 0, 0);
 }
 
+p, label {
+    color: white;
+    font-family: sans-serif;
+}
+
+h1, h2, h3 {
+    color: white;
+    font-family: sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+}
+
+li {
+    vertical-align: top;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: #ffffff;
+    padding: 5px;
+    width: 30%;
+}
+
+li:hover {
+    background-color: #72006c;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.content {
+    max-width: 700px;
+    margin: auto;
+}
 
 .footer {
     position: fixed;
