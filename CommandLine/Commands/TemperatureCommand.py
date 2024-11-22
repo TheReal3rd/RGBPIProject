@@ -1,5 +1,5 @@
 from CommandBase import *
-from Utils import fetchDeviceTemps
+from Resources.Utils import fetchDeviceTemps
 
 #Works fine completed.
 class TemperatureCommand(CommandBase):

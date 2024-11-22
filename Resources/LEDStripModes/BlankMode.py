@@ -12,6 +12,11 @@ class Mode():
     def update(self):
         pass
 
+    def onEnable(self):
+        pass
+
+    # Getter
+
     def getSetting(self, name):
         for x in self.settings:
             if x.getName().lower() == name.lower():
@@ -21,8 +26,10 @@ class Mode():
     def getName(self):
         return self._name
 
-    def setController(self, controller):
-        self.controller = controller
-
     def getSettings(self):
         return self.settings
+
+    # Setter
+
+    def setController(self, controller):
+        self.controller = controller

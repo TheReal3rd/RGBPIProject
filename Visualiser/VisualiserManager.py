@@ -5,7 +5,7 @@
 #   https://realpython.com/pygame-a-primer/
 
 #TODO Add fallbacks.
-from Utils import *
+from Resources.Utils import *
 import _thread
 import threading
 import time

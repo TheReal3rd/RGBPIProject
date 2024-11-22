@@ -1,4 +1,4 @@
-from rgbModes.BlankMode import *
+from Resources.LEDStripModes.BlankMode import *
 from Settings.Setting import *
 
 #Set the strip to a solid colour.

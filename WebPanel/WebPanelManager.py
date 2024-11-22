@@ -3,14 +3,16 @@
 #   https://stackoverflow.com/questions/21631799/how-can-i-pass-parameters-to-a-requesthandler
 #   https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7 #For post request handling.
 #   https://search.brave.com/search?q=html+scale+everything+bigger+when+on+phone&source=web&summary=1&summary_og=5217f18885f2abcceb2171
+#   https://stackoverflow.com/questions/9205081/is-there-a-way-to-store-a-function-in-a-list-or-dictionary-so-that-when-the-inde
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from functools import partial
-from Utils import fetchDeviceTemps
+from Resources.Utils import fetchDeviceTemps
 
 import _thread
 import threading
 import time
+
 
 class WebServer(BaseHTTPRequestHandler):
     _pagesLoaded = False
@@ -26,10 +28,19 @@ class WebServer(BaseHTTPRequestHandler):
     _redirectURL = "/"
     _redirectMessage = "Wasn't filled in. :/"
 
+    _replacementDict = None
+
     def __init__(self, controller, *args, **kwargs):
         self._controller = controller
         super().__init__(*args, **kwargs)
-        
+        self._replacementDict = {
+            "[CurrentMode]" : self.getCurrentModeSafe,
+            "[RedirectURL]" : self.getRedirectURL,
+            "[RedirectMessage]" : self.getRedirectMessage,
+            "[CurrentTemp]" : fetchDeviceTemps,
+            "[AvailableModes]" : self.htmlAvailableModes,
+            "[ModeSettings]" : self.htmlModeSettings
+        }
 
     def loadPages(self):
         reader = open("WebPanel/HTML/index.html", "r")
@@ -43,6 +54,7 @@ class WebServer(BaseHTTPRequestHandler):
 
         self._pagesLoaded = True
 
+    
     def do_GET(self):
         if not self._pagesLoaded:
             self.loadPages()
@@ -177,45 +189,15 @@ class WebServer(BaseHTTPRequestHandler):
             self._redirectURL = "/index.html"
             self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
 
-    def replacements(self, htmlIn, customReplacements={}):#TODO okay now make this a bit more cleaner look how to make func vars so we can store them in a dict.
-        controller = self._controller
-        if controller == None:
+    def replacements(self, htmlIn, customReplacements={}):
+        if self._controller == None:
             print("Controller failed to be fetched.")
             return htmlIn
-
-        if htmlIn.find("[CurrentMode]") != -1:
-            temp = controller.getCurrentMode()
-            result = "None"
-            if temp != None:
-                result = temp.getName()
-
-            htmlIn = htmlIn.replace("[CurrentMode]", result)
-
-        if htmlIn.find("[RedirectURL]") != -1:
-            htmlIn = htmlIn.replace("[RedirectURL]", self._redirectURL)
-
-        if htmlIn.find("[RedirectMessage]") != -1:
-            htmlIn = htmlIn.replace("[RedirectMessage]", self._redirectMessage)
-
-        if htmlIn.find("[CurrentTemp]") != -1:
-            htmlIn = htmlIn.replace("[CurrentTemp]", fetchDeviceTemps())
-
-        if htmlIn.find("[AvailableModes]") != -1:
-            result = ""
-            for m in controller.getModes():
-                temp = controller.getModes()[m]
-                result += '<option value="{simpleMode}">{name}</option>'.format(simpleMode=temp.getName().lower(), name=temp.getName())
-            htmlIn = htmlIn.replace("[AvailableModes]", result)
-        
-        if htmlIn.find("[ModeSettings]") != -1:
-            result = ""
-            if controller.getCurrentMode() == None:
-                result = "None"
-            else:
-                for s in controller.getCurrentMode().getSettings():
-                    result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
-                    
-            htmlIn = htmlIn.replace("[ModeSettings]", result)
+    
+        for rep in self._replacementDict.keys():
+            if htmlIn.find(rep) != -1:
+                func = self._replacementDict[rep]
+                htmlIn = htmlIn.replace(rep, str(func())) 
 
         for custom in customReplacements:
             replacement = customReplacements[custom]
@@ -223,6 +205,44 @@ class WebServer(BaseHTTPRequestHandler):
                 htmlIn = htmlIn.replace(custom, replacement)
 
         return htmlIn
+
+    #Getters
+
+    def getCurrentModeSafe(self):
+        controller = self._controller
+        temp = controller.getCurrentMode()
+        result = "None"
+        if temp != None:
+            result = temp.getName()
+        return result
+
+    def getRedirectURL(self):
+        return self._redirectURL
+
+    def getRedirectMessage(self):
+        return self._redirectMessage
+
+    
+    def htmlAvailableModes(self):
+        controller = self._controller
+        result = ""
+        for m in controller.getModes():
+            temp = controller.getModes()[m]
+            result += '<option value="{simpleMode}">{name}</option>'.format(simpleMode=temp.getName().lower(), name=temp.getName())
+        return result
+
+
+    def htmlModeSettings(self):
+        controller = self._controller
+        result = ""
+        if controller.getCurrentMode() == None:
+            result = "None"
+        else:
+            for s in controller.getCurrentMode().getSettings():
+                result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
+                    
+        return result
+
 
     #def do_POST(self):#Should idealy use post request to handle changes. But i can't be arsed too. As this panel is intended to be used in a local network. for personal use i feel i don't need to.
     #    contentLength = int(self.headers["Content-Length"])

@@ -1,7 +1,7 @@
 # RGB Pi Project
 
 This is a simple Python script used to controle an RGB strip.
-The hardware guide i used: [Hardware guide here](https://dordnung.de/raspberrypi-ledstrip/) 
+The hardware guide i used: Refer to "Resources used" section.
 
 This script provides multiple modes and settings for those modes. The modes provide different colour patterns / transitions. I am still working on adding more.
 
@@ -16,8 +16,10 @@ This script provides multiple modes and settings for those modes. The modes prov
 - Webpanel. Finish stylising.
 - Add multi strip support. Control multiple type of LED Strips inderpendently.
 - Add WS2812 support for addressible LEDS.
-- Add These Modes: Auto Day Night. Colour of the day. Sound React. Colour 1 2 Step.
+- Add These Modes: Sound React. Colour 1 2 Step.
 - Add input support. GPIO Buttons, brightness sensors, Any form of input really. 
+- Fix saving when setting change for main config. Keeps getting overwritten. Prolly thread related. Maybe use events or lock writting and reading when performing actions?
+- Add savable mode configs / presets.
 
 The Visualiser is intended to speed up the process of creating patterns and testing them. So you can visually see what would happen.
 
@@ -35,3 +37,7 @@ I am planning to do an addressible LED strip next. I maybe intergrate the contro
 - [TKinter used for test GUI.](https://realpython.com/python-gui-tkinter/) 
 - [WebServer Source.](https://pythonbasics.org/webserver/)
 - [Tempeture Monitor.](https://search.brave.com/search?q=get+raspberry+pi+temperature&spellcheck=0&source=alteredQuery&summary=1&conversation=a01dc941af2d7d224f0a2c&summary_og=471790e94269a57f25bf41)
+- [Hardware guide here](https://dordnung.de/raspberrypi-ledstrip/) 
+- [WS281x hardware guide here](https://dordnung.de/raspberrypi-ledstrip/ws2812) 
+- [WS281x Library Python](https://github.com/rpi-ws281x/rpi-ws281x-python) 
+- [WS281x Library](https://github.com/jgarff/rpi_ws281) 

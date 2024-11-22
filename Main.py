@@ -7,10 +7,9 @@
 #Personal notes:
 #   Pi Pinout: https://learn.sparkfun.com/tutorials/raspberry-gpio/gpio-pinout
 
-from rgbController import *
-from CommandLine.CommandManager import *
+from Controller import *
+from Resources.GlobalDataManager import *
 from Settings.Setting import *
-from WebPanel.WebPanelManager import *
 import os
 import os.path
 import json
@@ -58,14 +57,14 @@ def getMainSettings():
 
 def close(rgbCont):
 	#saveMain()
-	rgbCont.save()
-	rgbCont.stop()
+	#rgbCont.save()
+	#rgbCont.stop()
 	os._exit(0)
 
 
 if __name__ == "__main__":
 	if not testMode:
-		os.system("sudo pigpiod")#Prob wont work cause sudo...
+		os.system("sudo pigpiod")#Prob wont work cause sudo... Seems to work. Yay :3
 
 	#Config Load / Save
 	print("Loading the settings.")
@@ -74,26 +73,27 @@ if __name__ == "__main__":
 	else:
 		loadMain()
 
+	print("GlobalData started.")
+	dataManager = GlobalDataManager()
 	
 	print("RGB Controller started.")
-	rgbCont = rgbController(testMode, settings[0].getValue())
-	rgbCont.load()
-	rgbCont.save()
+	controller = Controller()
 
-	if settings[2].getValue():
-		print("Command Manager started.")
-		commandLine = CommandManager(rgbCont)
-		commandLine.start()
+	#if settings[2].getValue():
+	#	print("Command Manager started.")
+	#	commandLine = CommandManager(rgbCont)
+	#	commandLine.start()
 
-	if testMode and settings[1].getValue():
-		from Visualiser.VisualiserManager import * #This fixes issues related to having no GUI on the PI
-		vm = VisualiserManagerPygame(rgbCont)
-		vm.start()
-		rgbCont.setVisuiliser(vm)
+	#if testMode and settings[1].getValue():
+	#	from Visualiser.VisualiserManager import * #This fixes issues related to having no GUI on the PI
+	#	vm = VisualiserManagerPygame(rgbCont)
+	#	vm.start()
+	#	rgbCont.setVisuiliser(vm)
 
-	if settings[3].getValue():
-		webPanel = WebpanelManager(rgbCont, settings[4].getValue(), settings[5].getValue())
-		webPanel.start()
+	##if settings[3].getValue():
+	#	webPanel = WebpanelManager(rgbCont, settings[4].getValue(), settings[5].getValue())
+	#	webPanel.start()
 
 	while True:
-		rgbCont.update()
+		pass
+		#rgbCont.update()

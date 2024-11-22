@@ -26,3 +26,25 @@ def fetchDeviceTemps():# This is intended to run on Pi so i only gonna write thi
     else:
         return "-1"
 
+
+class msDelay():
+    startMs = 0
+
+    def __init__(self):
+        import time
+        self.startMs = int(round(time.time() * 1000))
+
+    def reset(self):
+        self.startMs = int(round(time.time() * 1000))
+
+    def passedMS(self, amount):
+        if(self.startMs >= amount):
+            return True
+        return False
+
+    def passedMSReset(self, amount):
+        if self.passedMS(amount):
+            self.reset()
+            return True
+        return False
+            

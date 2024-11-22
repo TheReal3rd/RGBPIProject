@@ -1,7 +1,7 @@
-from rgbModes.BlankMode import *
+from Resources.LEDStripModes.BlankMode import *
 from Settings.Setting import *
 
-from Utils import *
+from Resources.Utils import *
 
 import random
 import time
