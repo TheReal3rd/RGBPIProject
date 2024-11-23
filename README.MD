@@ -5,12 +5,14 @@ The hardware guide i used: Refer to "Resources used" section.
 
 This script provides multiple modes and settings for those modes. The modes provide different colour patterns / transitions. I am still working on adding more.
 
+Currently the whole script is being reworked to support multiple lights and different types. This will make the program need more configuration to get working but allows expandability.
+
 ## Currently whats complete is:
-- Command System.
-- Settings.
-- Controller.
-- Visualiser.
-- Webpanel.
+- Command System (Needs to be reworked).
+- Settings (Needs to be reworked.).
+- Controller (Getting reworked).
+- Visualiser (Needs to be reworked no longer working.).
+- Webpanel (Needs to be reworked no longer working.).
 
 ## TODO:
 - Webpanel. Finish stylising.

@@ -8,6 +8,7 @@
 #   Pi Pinout: https://learn.sparkfun.com/tutorials/raspberry-gpio/gpio-pinout
 
 from Controller import *
+from CommandLine.CommandManager import *
 from Resources.GlobalDataManager import *
 from Settings.Setting import *
 import os
@@ -33,14 +34,14 @@ def saveMain():
 		data[x.getName()] = x.getValue()
 		
 	jsonString = json.dumps(data)
-	with open("config.json", "w") as outfile:
+	with open("configs/config.json", "w") as outfile:
 		outfile.write(jsonString)
 
 
 def loadMain():
 	print("Load")
 	data = {}
-	with open("config.json", "r") as jsonFile:
+	with open("configs/config.json", "r") as jsonFile:
 		data = json.load(jsonFile)
     
 	for x in settings:
@@ -60,8 +61,6 @@ def getMainSettings():
 
 
 def close(controller):
-	#saveMain()
-	#rgbCont.save()
 	controller.close()
 	os._exit(0)
 
@@ -75,7 +74,7 @@ if __name__ == "__main__":
 
 	#Config Load / Save
 	print("Loading the settings.")
-	if not os.path.isfile("config.json"):
+	if not os.path.isfile("configs/config.json"):
 		saveMain()
 	else:
 		loadMain()
@@ -86,10 +85,10 @@ if __name__ == "__main__":
 	print("RGB Controller started.")
 	fixController = Controller(dataManager)
 
-		#if settings[2].getValue():
-		#	print("Command Manager started.")
-		#	commandLine = CommandManager(rgbCont)
-		#	commandLine.start()
+	if settings[2].getValue():
+		print("Command Manager started.")
+		commandLine = CommandManager(fixController)
+		commandLine.start()
 
 	while True:
 		fixController.update()

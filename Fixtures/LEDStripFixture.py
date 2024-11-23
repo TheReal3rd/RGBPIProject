@@ -16,8 +16,8 @@ class LEDStripFixture(FixtureBase):
     _GREEN_PIN = None
     _BLUE_PIN = None
 
-    def __init__(self, controller, redPin, greenPin, bluePin):
-        super().__init__("LEDStrip", controller)
+    def __init__(self, name, controller, redPin, greenPin, bluePin):
+        super().__init__(name, controller)
         if not isTestMode():
             import pigpio
             self.pi = pigpio.pi()
