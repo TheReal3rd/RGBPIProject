@@ -3,10 +3,6 @@ from Resources.Utils import clamp
 from Main import *
 
 class LEDStripFixture(FixtureBase):
-    _RED_PIN = None
-    _GREEN_PIN = None
-    _BLUE_PIN = None
-
     _currentMode = None
 
     _red = 0
@@ -14,8 +10,17 @@ class LEDStripFixture(FixtureBase):
     _blue = 0
     _brightness = 255
 
+    #Pin control
+    _pi = None
+    _RED_PIN = None
+    _GREEN_PIN = None
+    _BLUE_PIN = None
+
     def __init__(self, controller, redPin, greenPin, bluePin):
         super().__init__("LEDStrip", controller)
+        if not isTestMode():
+            import pigpio
+            self.pi = pigpio.pi()
         self._RED_PIN = redPin
         self._GREEN_PIN = greenPin
         self._BLUE_PIN = bluePin
