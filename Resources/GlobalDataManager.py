@@ -5,9 +5,44 @@ import importlib
 import inspect
 import os
 import asyncio
+"""#OLD load and save code for mode.
+        def save(self):
+        for m in self.modes:
+            tempMode = self.modes[m]
+            if len(tempMode.getSettings()) <= 0:
+                continue
 
+            data = {}
+            for x in tempMode.getSettings():
+                data[x.getName()] = x.getValue()
 
-class GlobalDataManager():
+            jsonString = json.dumps(data)
+            with open("ModeSettings/{modeName}Config.json".format(modeName=m), "w") as outfile:
+                outfile.write(jsonString)
+
+    def load(self):
+        for m in self.modes:
+            tempMode = self.modes[m]
+            if len(tempMode.getSettings()) <= 0:
+                continue
+
+            fileName = "ModeSettings/{modeName}Config.json".format(modeName=m)
+            if not os.path.isfile(fileName):
+                continue
+
+            data = {}
+            with open(fileName) as jsonFile:
+                data = json.load(jsonFile)
+                    
+            for x in tempMode.getSettings():
+                value = data.get(x.getName())
+                if value == None:
+                    x.setValue(x.getDefaultValue())
+                else:
+                    x.setValue(value)
+"""
+
+class GlobalDataManager():#TODO need to readd mode setting but low priority.
 
     #LED Strip Data
     stripModes = {}
@@ -18,7 +53,6 @@ class GlobalDataManager():
     def __init__(self):
         self.loadLEDStripModes()
 
-
     def loadLEDStripModes(self):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
         current_module_name = os.path.splitext(os.path.basename(current_dir))[0]
@@ -27,7 +61,7 @@ class GlobalDataManager():
 
         for file in glob.glob(current_dir + "/LEDStripModes/*.py"):
             name = os.path.splitext(os.path.basename(file))[0]
-            
+
             # Ignore __ files
             if name.startswith("__"):
                 continue
@@ -44,8 +78,11 @@ class GlobalDataManager():
                     mode = handlerClass()
                     if mode.getName() == "BLANK":
                         continue
-                    #mode.setController(self)
+                   
                     self.stripModes[mode.getName().lower()] = mode
                     loadedModesList.append(mode.getName())
 
         print("LEDStripModes Loaded: {names}".format(names = loadedModesList))
+
+    def getLEDStripModes(self):
+        return self.stripModes

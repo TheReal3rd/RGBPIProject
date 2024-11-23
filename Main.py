@@ -25,6 +25,7 @@ settings = [
 	Setting("WebPort", "Webpanel port.", 8080, int)#5
 ]
 
+#Funcs
 def saveMain():
 	print("Save")
 	data = {}
@@ -52,14 +53,20 @@ def loadMain():
 			x.setValue(x.getDefaultValue())
 			print("{SettingName} has been reset".format(SettingName=x.getName()))
 
+
+#Getter 
 def getMainSettings():
 	return settings
 
-def close(rgbCont):
+
+def close(controller):
 	#saveMain()
 	#rgbCont.save()
-	#rgbCont.stop()
+	controller.close()
 	os._exit(0)
+
+def isTestMode():
+	return testMode
 
 
 if __name__ == "__main__":
@@ -75,25 +82,14 @@ if __name__ == "__main__":
 
 	print("GlobalData started.")
 	dataManager = GlobalDataManager()
-	
+		
 	print("RGB Controller started.")
-	controller = Controller()
+	fixController = Controller(dataManager)
 
-	#if settings[2].getValue():
-	#	print("Command Manager started.")
-	#	commandLine = CommandManager(rgbCont)
-	#	commandLine.start()
-
-	#if testMode and settings[1].getValue():
-	#	from Visualiser.VisualiserManager import * #This fixes issues related to having no GUI on the PI
-	#	vm = VisualiserManagerPygame(rgbCont)
-	#	vm.start()
-	#	rgbCont.setVisuiliser(vm)
-
-	##if settings[3].getValue():
-	#	webPanel = WebpanelManager(rgbCont, settings[4].getValue(), settings[5].getValue())
-	#	webPanel.start()
+		#if settings[2].getValue():
+		#	print("Command Manager started.")
+		#	commandLine = CommandManager(rgbCont)
+		#	commandLine.start()
 
 	while True:
-		pass
-		#rgbCont.update()
+		fixController.update()

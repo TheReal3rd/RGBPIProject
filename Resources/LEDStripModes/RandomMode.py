@@ -25,7 +25,7 @@ class RandomMode(Mode):
             Setting("FadingTransition", "Linearly transition to the next colour.", True, bool)
         ]
 
-    def update(self):
+    def update(self, fixture):
         if self.settings[1].getValue():
             if self.finished:
                 self.toRed = random.randint(0, 255)
@@ -40,7 +40,7 @@ class RandomMode(Mode):
                 if self.red == self.toRed and self.green == self.toGreen and self.blue == self.toBlue:
                     self.finished = True
 
-            self.controller.setColour(self.red, self.green, self.blue, 255)
+            fixture.setColour(self.red, self.green, self.blue, 255)
         else:
             time.sleep(self.settings[0].getValue())
-            self.controller.setColour(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
+            fixture.setColour(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)

@@ -79,40 +79,7 @@ class rgbController():
         self.sendToPin(self.BLUE_PIN, 0)
         #self.pi.close()
 
-    def save(self):
-        for m in self.modes:
-            tempMode = self.modes[m]
-            if len(tempMode.getSettings()) <= 0:
-                continue
 
-            data = {}
-            for x in tempMode.getSettings():
-                data[x.getName()] = x.getValue()
-
-            jsonString = json.dumps(data)
-            with open("ModeSettings/{modeName}Config.json".format(modeName=m), "w") as outfile:
-                outfile.write(jsonString)
-
-    def load(self):
-        for m in self.modes:
-            tempMode = self.modes[m]
-            if len(tempMode.getSettings()) <= 0:
-                continue
-
-            fileName = "ModeSettings/{modeName}Config.json".format(modeName=m)
-            if not os.path.isfile(fileName):
-                continue
-
-            data = {}
-            with open(fileName) as jsonFile:
-                data = json.load(jsonFile)
-                    
-            for x in tempMode.getSettings():
-                value = data.get(x.getName())
-                if value == None:
-                    x.setValue(x.getDefaultValue())
-                else:
-                    x.setValue(value)
 
 
     #Loads command into the commands list. Copied from the AilisBot Project. (Very hacked together... Lol i had alot of issue with this but it now works. :3)

@@ -14,4 +14,4 @@ class SetMode(Mode):
         ]
 
     def update(self):
-        self.controller.setColour(self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), self.settings[3].getValue())
+        fixture.setColour(self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), self.settings[3].getValue())

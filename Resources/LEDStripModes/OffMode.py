@@ -8,5 +8,5 @@ class OffMode(Mode):
         self._name = "Off"
         self.settings = []
 
-    def update(self):
-        self.controller.setColour(0, 0, 0, 0)
+    def update(self, fixture):
+        fixture.setColour(0, 0, 0, 0)

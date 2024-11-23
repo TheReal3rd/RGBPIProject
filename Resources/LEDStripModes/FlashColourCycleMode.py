@@ -31,7 +31,7 @@ class FlashColourCycleMode(Mode):
             Setting("CycleSpeed", "The cycle speed colour transitions.", 25, float)
         ]
 
-    def update(self):
+    def update(self, fixture):
         step = self.settings[1].getValue()
         if self.state:
             self.red = moveTowards(self.red, self.toRed, step)
@@ -58,4 +58,4 @@ class FlashColourCycleMode(Mode):
 
                 self.state = True
 
-        self.controller.setColour(self.red, self.green, self.blue, self.settings[0].getValue())
+        fixture.setColour(self.red, self.green, self.blue, self.settings[0].getValue())

@@ -30,7 +30,7 @@ class FlashMode(Mode):
             Setting("UseBrightness", "When using Soft Transitions instead of fading colour out fade brightness.", True, bool)#8
         ]
 
-    def update(self):
+    def update(self, fixture):
         toRed = self.settings[0].getValue()
         toGreen = self.settings[1].getValue()
         toBlue = self.settings[2].getValue()
@@ -69,8 +69,8 @@ class FlashMode(Mode):
                 self.controller.setColour(self.red, self.green, self.blue, self.settings[3].getValue())
         else:
             if self.state:
-                self.controller.setColour(toRed, toGreen, toBlue, self.settings[3].getValue())
+                fixture.setColour(toRed, toGreen, toBlue, self.settings[3].getValue())
             else: 
-                self.controller.setColour(0, 0, 0, 0)
+                fixture.setColour(0, 0, 0, 0)
             self.state = not self.state
             time.sleep(self.settings[4].getValue())

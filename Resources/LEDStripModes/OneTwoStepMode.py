@@ -26,11 +26,11 @@ class OneTwoStepMode(Mode):#TODO complete this.
             Setting("StepWaitDuration", "Number of seconds to do a trigger the steps.", 1, int) # 8
         ]
 
-    def onEnable(self):
+    def onEnable(self, fixture):
         self.delay.reset()
         self.displayDelay.reset()
 
-    def update(self):##TODO finish this.
+    def update(self, fixture):##TODO finish this.
         if self.delay.passedMS():
             if self.displayDelay.passedMSReset(1000):
                 pass
@@ -38,4 +38,4 @@ class OneTwoStepMode(Mode):#TODO complete this.
         else:
             pass
             
-        self.controller.setColour(self.cRed, self.cGreen, self.cBlue, self.settings[6].getValue())
+        fixture.setColour(self.cRed, self.cGreen, self.cBlue, self.settings[6].getValue())

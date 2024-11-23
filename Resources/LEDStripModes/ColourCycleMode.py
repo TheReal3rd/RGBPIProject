@@ -20,7 +20,7 @@ class FadingCycleMode(Mode):
             Setting("Brightness", "Brightness of the LED.", 255.0, float)
         ]
 
-    def update(self):
+    def update(self, fixture):
         milliseconds = int(round((time.time() + self.settings[0].getValue()) * 1000))
         state = math.ceil(milliseconds / 20)
         state %= 360.0
@@ -30,4 +30,4 @@ class FadingCycleMode(Mode):
         self.g = colour[1] * 255
         self.b = colour[2] * 255
 
-        self.controller.setColour(self.r, self.g, self.b, self.settings[1].getValue())
+        fixture.setColour(self.r, self.g, self.b, self.settings[1].getValue())

@@ -2,17 +2,16 @@ from Settings.Setting import *
 #Just a template Mode.
 class Mode():
     _name = None
-    controller = None
 
     settings = []
 
     def __init__(self):
         self._name = "BLANK"
 
-    def update(self):
+    def update(self, fixture):
         pass
 
-    def onEnable(self):
+    def onEnable(self, fixture):
         pass
 
     # Getter
@@ -28,8 +27,3 @@ class Mode():
 
     def getSettings(self):
         return self.settings
-
-    # Setter
-
-    def setController(self, controller):
-        self.controller = controller
