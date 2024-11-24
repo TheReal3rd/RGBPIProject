@@ -1,6 +1,7 @@
 from Fixtures.FixtureBase import *
 from Resources.Utils import clamp
 from Main import *
+import copy
 
 class LEDStripFixture(FixtureBase):
     _currentMode = None
@@ -54,7 +55,7 @@ class LEDStripFixture(FixtureBase):
     # Getter
 
     def getCurrentMode(self):
-        self.setColour(0, 0, 0, self.brightness)
+        self.setColour(0, 0, 0, self._brightness)
         return self._currentMode
 
     def getColour(self):
@@ -78,7 +79,7 @@ class LEDStripFixture(FixtureBase):
         #    self.visualiser.updateMode(name) 
         
         #saveMain()#Saving here causes saves to get corrupted.
-        self._currentMode = mode
+        self._currentMode = copy.deepcopy(mode)
         self._currentMode.onEnable(self)
 
     def setColour(self, red, green, blue, brightness):

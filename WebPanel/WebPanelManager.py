@@ -5,6 +5,9 @@
 #   https://search.brave.com/search?q=html+scale+everything+bigger+when+on+phone&source=web&summary=1&summary_og=5217f18885f2abcceb2171
 #   https://stackoverflow.com/questions/9205081/is-there-a-way-to-store-a-function-in-a-list-or-dictionary-so-that-when-the-inde
 
+#   https://www.geeksforgeeks.org/python-match-case-statement/ I didn't know Python a a switch statement equivelent! yay.
+#   https://www.tutorialspoint.com/python/python_matchcase_statement.htm
+
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from functools import partial
 from Resources.Utils import fetchDeviceTemps
@@ -18,37 +21,41 @@ class WebServer(BaseHTTPRequestHandler):
     _pagesLoaded = False
 
     _controller = None
+    _dataManager = None
 
     _indexPage = None 
     _redirectPage = None
-    _settingEditPage = None
+    _viewFixturePage = None
 
     _styleSheet = None
 
     _redirectURL = "/"
     _redirectMessage = "Wasn't filled in. :/"
 
-    _replacementDict = None
+    _replacementDict = {}
 
-    def __init__(self, controller, *args, **kwargs):
+    def __init__(self, dataManager, controller, *args, **kwargs):
+        self._dataManager = dataManager
         self._controller = controller
-        super().__init__(*args, **kwargs)
         self._replacementDict = {
-            "[CurrentMode]" : self.getCurrentModeSafe,
             "[RedirectURL]" : self.getRedirectURL,
             "[RedirectMessage]" : self.getRedirectMessage,
             "[CurrentTemp]" : fetchDeviceTemps,
-            "[AvailableModes]" : self.htmlAvailableModes,
-            "[ModeSettings]" : self.htmlModeSettings
+            "[FixtureList]" : self.getFixtureList,
+            "[NumFixtures]" : self.getFixtureCount
         }
+        super().__init__(*args, **kwargs)
 
     def loadPages(self):
         reader = open("WebPanel/HTML/index.html", "r")
         self._indexPage = reader.read()
+
         reader = open("WebPanel/HTML/redirect.html", "r")
         self._redirectPage = reader.read()
-        reader = open("WebPanel/HTML/settingEdit.html", "r")
-        self._settingEditPage = reader.read()
+
+        reader = open("WebPanel/HTML/viewFixture.html", "r")
+        self._viewFixturePage = reader.read()
+
         reader = open("WebPanel/CSS/style.css", "r")
         self._styleSheet = reader.read()
 
@@ -58,7 +65,7 @@ class WebServer(BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._pagesLoaded:
             self.loadPages()
-
+        #Param handler
         params = {}
         cleanPath = self.path
         if self.path.find("?") != -1:
@@ -70,19 +77,88 @@ class WebServer(BaseHTTPRequestHandler):
                     continue
                 params[splitOne[0]] = splitOne[1]
 
-        if cleanPath in ["/", "/index", "/index.html"]:
-            self.send_response(200)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            self.wfile.write(bytes(self.replacements(self._indexPage), "utf-8"))
+        #Page Responses.
+        match (cleanPath):
+            case "/" | "/index" |  "/index.html":
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                self.wfile.write(bytes(self.replacements(self._indexPage), "utf-8"))
+            case "/style":
+                self.send_response(200)
+                self.send_header("Content-type", "text/css")
+                self.end_headers()
+                self.wfile.write(bytes(self._styleSheet, "utf-8"))
+            case "/ViewFixture":
+                failure = False
+                failMessage = "This error message wasn't filled in..."
+                customReplacements = {}
+                if "fixture" in params.keys():
+                    fixName = params["fixture"]
+                    fixtures = self._controller.getFixtures()
+                    if fixName in fixtures.keys():
+                        fixture = fixtures[fixName]
 
-        elif cleanPath in ["/style"]:
-            self.send_response(200)
-            self.send_header("Content-type", "text/css")
-            self.end_headers()
-            self.wfile.write(bytes(self._styleSheet, "utf-8"))
+                        customReplacements["[FixtureName]"] = fixture.getName()
+                        customReplacements["[FixtureNameLower]"] = fixture.getName().lower()
+                        customReplacements["[FixtureType]"] = type(fixture).__name__
 
-        elif cleanPath in ["/ModeChange"]:
+                        modeName = "None"
+                        currentMode = fixture.getCurrentMode()
+                        if not currentMode == None:
+                            modeName = currentMode.getName()
+
+                            #Fixture Mode Settings
+                            fixtureModeSettingsResult = "<p>This Mode doesn't have any settings associated to it.</p>"
+                            fixtureModeSettings = currentMode.getSettings()
+                            if len(fixtureModeSettings) >= 1:
+                                fixtureModeSettingsResult = ""
+                                for set in fixtureModeSettings:
+                                    fixtureModeSettingsResult += '<li><a href="/FixtureSettingEdit?FixtureName={FixtureName}&settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(FixtureName=fixture.getName().lower(), SettingSimpleName=set.getName().lower(), SettingName=set.getName())
+
+                        customReplacements["[FixtureMode]"] = modeName 
+                        customReplacements["[FixtureModeSettings]"] = fixtureModeSettingsResult
+
+                        fixtureModes = self._dataManager.getFixureModes(fixture)
+                        fixtureModeResult = "<p>This fixture doesn't have any modes associated to it.</p>"
+                        if not fixtureModes == None:
+                            modeResults = ""
+                            for m in fixtureModes.keys():
+                                temp = fixtureModes[m]
+                                modeResults += '<option value="{simpleMode}">{name}</option>'.format(simpleMode=temp.getName().lower(), name=temp.getName())
+
+                            fixtureModeResult = """ 
+                            <form action="/FixtureModeChange">
+                                <input  type="hidden" id="FixtureName" name="FixtureName" value="{FixtureName}">
+                                <select id="modeSelect" name="modeSelect">
+                                    {modeResults}
+                                </select>
+                                <button type="submit">Submit</button>
+                            </form>
+                            """.format(FixtureName=fixture.getName().lower(), modeResults=modeResults)
+
+                        customReplacements["[FixtureModes]"] = fixtureModeResult
+      
+      
+                    else:
+                        failure = True
+                        failMessage = "Failed to find the requested fixture."
+                else:
+                    failure = True
+                    failMessage = "No fixture name provided."
+
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                if failure:
+                    self._redirectMessage = failMessage
+                    self._redirectURL = "/index"
+                    self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
+                else:
+                    self.wfile.write(bytes(self.replacements(self._viewFixturePage, customReplacements), "utf-8"))
+
+
+        """elif cleanPath in ["/ModeChange"]:#OLD Web panel code maybe reused delete later.
             #Changes the Mode
             if len(params) != 0:
                 newMode = params["modeSelect"]
@@ -187,7 +263,7 @@ class WebServer(BaseHTTPRequestHandler):
             self.end_headers()
             self._redirectMessage = "404 Page not found."
             self._redirectURL = "/index.html"
-            self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))
+            self.wfile.write(bytes(self.replacements(self._redirectPage), "utf-8"))"""
 
     def replacements(self, htmlIn, customReplacements={}):
         if self._controller == None:
@@ -207,41 +283,36 @@ class WebServer(BaseHTTPRequestHandler):
         return htmlIn
 
     #Getters
-
-    def getCurrentModeSafe(self):
-        controller = self._controller
-        temp = controller.getCurrentMode()
-        result = "None"
-        if temp != None:
-            result = temp.getName()
-        return result
-
     def getRedirectURL(self):
         return self._redirectURL
 
     def getRedirectMessage(self):
         return self._redirectMessage
 
-    
-    def htmlAvailableModes(self):
-        controller = self._controller
+    def getFixtureList(self):
         result = ""
-        for m in controller.getModes():
-            temp = controller.getModes()[m]
-            result += '<option value="{simpleMode}">{name}</option>'.format(simpleMode=temp.getName().lower(), name=temp.getName())
+        fixtures = self._controller.getFixtures()
+        for fix in fixtures.keys():
+            fixture = fixtures[fix]
+            mode = "None"
+            if not fixture.getCurrentMode() == None:
+                mode = fixture.getCurrentMode().getName()
+            result += result + '<tr><td>{name}</td><td>{fixType}</td><td>{fixMode}</td><td><a href="/ViewFixture?fixture={nameLower}">Edit &#8627;</a></td></tr>'.format(name=fixture.getName(), fixType=type(fixture).__name__, fixMode=mode, nameLower=fixture.getName().lower())
         return result
 
+    def getFixtureCount(self):
+        return str(len(self._controller.getFixtures()))
 
-    def htmlModeSettings(self):
-        controller = self._controller
-        result = ""
-        if controller.getCurrentMode() == None:
-            result = "None"
-        else:
-            for s in controller.getCurrentMode().getSettings():
-                result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
-                    
-        return result
+    #def htmlModeSettings(self):
+    #    controller = self._controller
+    #    result = ""
+    #    if controller.getCurrentMode() == None:
+    #        result = "None"
+    #    else:
+    #        for s in controller.getCurrentMode().getSettings():
+    #            result += '<li><a href="/SettingEdit?settingName={SettingSimpleName}"><p> Edit -> {SettingName}</p></a></li>'.format(SettingSimpleName=s.getName().lower(), SettingName=s.getName())
+    #                
+    #    return result
 
 
     #def do_POST(self):#Should idealy use post request to handle changes. But i can't be arsed too. As this panel is intended to be used in a local network. for personal use i feel i don't need to.
@@ -250,13 +321,15 @@ class WebServer(BaseHTTPRequestHandler):
 
 class WebpanelManager(threading.Thread):
     _controller = None
+    _dataManager = None
     _webserver = None
 
     _serverAddress = "localhost"
     _serverPort = 8080
 
-    def __init__(self, controller, serverAddress, serverPort, *args, **kwargs):
+    def __init__(self, dataManager, controller, serverAddress, serverPort, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._dataManager = dataManager
         self._controller = controller
         self._serverAddress = serverAddress
         self._serverPort = serverPort
@@ -265,7 +338,7 @@ class WebpanelManager(threading.Thread):
         hostName = self._serverAddress
         serverPort = self._serverPort
 
-        handler = partial(WebServer, self._controller)
+        handler = partial(WebServer, self._dataManager, self._controller)
 
         self._webServer = HTTPServer((hostName, serverPort), handler)
         print("Server started http://%s:%s" % (hostName, serverPort))

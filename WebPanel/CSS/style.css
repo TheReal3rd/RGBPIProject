@@ -7,7 +7,22 @@ p, label {
     font-family: sans-serif;
 }
 
+table, th, td {
+    color: white;
+    font-family: sans-serif;
+    border-color: white;
+    border: 1px solid;
+    text-align: left;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 h1, h2, h3 {
+    color: white;
+    font-family: sans-serif;
+}
+
+a {
     color: white;
     font-family: sans-serif;
 }

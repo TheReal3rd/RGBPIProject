@@ -42,7 +42,7 @@ import asyncio
                     x.setValue(value)
 """
 
-class GlobalDataManager():#TODO need to readd mode setting but low priority.
+class GlobalDataManager():#TODO need to re-add mode setting but low priority.
 
     #LED Strip Data
     stripModes = {}
@@ -53,6 +53,18 @@ class GlobalDataManager():#TODO need to readd mode setting but low priority.
     def __init__(self):
         self.loadLEDStripModes()
 
+    ## Universal funcs
+
+    def getFixureModes(self, fixture):
+        match (type(fixture).__name__):
+            case "LEDStripFixture":
+                return self.getLEDStripModes()
+            case _:
+                return None
+
+
+    ## LED Strip specific
+    
     def loadLEDStripModes(self):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
         current_module_name = os.path.splitext(os.path.basename(current_dir))[0]

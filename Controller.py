@@ -46,7 +46,7 @@ class Controller():
                     bluePin = data["BLUE_PIN"]
 
                     finalFixture = LEDStripFixture(name, self, redPin, greenPin, bluePin)
-                    self._fixtures[name] = finalFixture
+                    self._fixtures[name.lower()] = finalFixture
 
                     if "CurrentMode" in data.keys():
                         currentMode = self._dataManager.getLEDStripModes()[data["CurrentMode"].lower()]

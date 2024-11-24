@@ -9,6 +9,7 @@
 
 from Controller import *
 from CommandLine.CommandManager import *
+from WebPanel.WebPanelManager import *
 from Resources.GlobalDataManager import *
 from Settings.Setting import *
 import os
@@ -89,6 +90,11 @@ if __name__ == "__main__":
 		print("Command Manager started.")
 		commandLine = CommandManager(fixController)
 		commandLine.start()
+
+	if settings[3].getValue():
+		print("Webpanel Manager started.")
+		webPanel = WebpanelManager(dataManager, fixController, settings[4].getValue(), settings[5].getValue())
+		webPanel.start()
 
 	while True:
 		fixController.update()

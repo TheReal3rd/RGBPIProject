@@ -42,4 +42,4 @@ I am planning to do an addressible LED strip next. I maybe intergrate the contro
 - [Hardware guide here](https://dordnung.de/raspberrypi-ledstrip/) 
 - [WS281x hardware guide here](https://dordnung.de/raspberrypi-ledstrip/ws2812) 
 - [WS281x Library Python](https://github.com/rpi-ws281x/rpi-ws281x-python) 
-- [WS281x Library](https://github.com/jgarff/rpi_ws281) 
+- [WS281x Library](https://github.com/jgarff/rpi_ws281x) 
