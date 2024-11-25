@@ -8,11 +8,11 @@ This script provides multiple modes and settings for those modes. The modes prov
 Currently the whole script is being reworked to support multiple lights and different types. This will make the program need more configuration to get working but allows expandability.
 
 ## Currently whats complete is:
-- Command System (Needs to be reworked).
-- Settings (Needs to be reworked.).
-- Controller (Getting reworked).
+- Command System (Working but needs commands being reimplemented.).
+- Settings (Saving needs reimplementing.).
+- Controller.
 - Visualiser (Needs to be reworked no longer working.).
-- Webpanel (Needs to be reworked no longer working.).
+- Webpanel.
 
 ## TODO:
 - Webpanel. Finish stylising.

@@ -66,12 +66,6 @@ class LEDStripFixture(FixtureBase):
 
     # Setter
     def setCurrentMode(self, mode):
-        #mainSet = getMainSettings()
-        #if mode == None:
-        #    mainSet[0].setValue("None")
-        #else:
-        #    mainSet[0].setValue(mode.getName())
-        
         #if self.visualiser != None:
         #    name = "None"
         #    if mode != None:

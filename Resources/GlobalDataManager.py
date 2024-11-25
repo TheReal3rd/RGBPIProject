@@ -42,7 +42,7 @@ import asyncio
                     x.setValue(value)
 """
 
-class GlobalDataManager():#TODO need to re-add mode setting but low priority.
+class GlobalDataManager():#TODO need to re-add mode settings saving but low priority.
 
     #LED Strip Data
     stripModes = {}
@@ -78,7 +78,7 @@ class GlobalDataManager():#TODO need to re-add mode setting but low priority.
             if name.startswith("__"):
                 continue
 
-            module = importlib.import_module("." + name, package="Resources.LEDStripModes")#package=current_module_name
+            module = importlib.import_module("." + name, package="Resources.LEDStripModes")
 
             for member in dir(module):
                 if not member.endswith("Mode"):

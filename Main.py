@@ -19,11 +19,11 @@ import json
 testMode = True
 
 settings = [
-	Setting("OnStartMode", "The mode that starts when the program starts.", "ColourCycle", str),#0
-	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),#1
-	Setting("UseCommand", "Enable or disable the command system.", True, bool),#2
-	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),#3
-	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),#4
+	Setting("OnStartMode", "The mode that starts when the program starts.", "ColourCycle", str),									#0 Doesn't apply anymore as its moved to the fixture configs. TODO repurpose this.
+	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),  #1
+	Setting("UseCommand", "Enable or disable the command system.", True, bool),														#2
+	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),													#3
+	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),								#4
 	Setting("WebPort", "Webpanel port.", 8080, int)#5
 ]
 
@@ -60,7 +60,6 @@ def loadMain():
 def getMainSettings():
 	return settings
 
-
 def close(controller):
 	controller.close()
 	os._exit(0)
@@ -68,10 +67,9 @@ def close(controller):
 def isTestMode():
 	return testMode
 
-
 if __name__ == "__main__":
 	if not testMode:
-		os.system("sudo pigpiod")#Prob wont work cause sudo... Seems to work. Yay :3
+		os.system("sudo pigpiod")
 
 	#Config Load / Save
 	print("Loading the settings.")

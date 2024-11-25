@@ -8,11 +8,12 @@
 <!-- \______/ \__|       \_______|-->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    <head onload="start()">
         <title>RGB PI Web Panel</title>
         <meta http-equiv="refresh" content="1; url='[RedirectURL]'" />
         <link rel="stylesheet" href="/style">
         <meta name="viewport" content="width=1280, initial-scale=1">
+        <script src="mainScript"></script>
     </head>
     <body>
         <div class="content">
@@ -24,11 +25,5 @@
                 <p class="footer-text gradient-text"> RGB Pi Project. Created by 3rd. </p>
             </div>
         </footer>
-        <script>
-            var siteWidth = 500;
-            var scale = screen.width /siteWidth;
-
-            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width='+siteWidth+', initial-scale='+scale+'');
-        </script>
     </body>
 </html>
