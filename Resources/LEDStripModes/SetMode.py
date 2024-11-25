@@ -13,5 +13,5 @@ class SetMode(Mode):
             Setting("Brightness", "Sets the Brightness levels.", 255, float)
         ]
 
-    def update(self):
+    def update(self, fixture):
         fixture.setColour(self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), self.settings[3].getValue())
