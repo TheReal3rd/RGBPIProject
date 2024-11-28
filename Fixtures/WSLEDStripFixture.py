@@ -33,11 +33,16 @@ class WSLEDStripFixture(FixtureBase):
         if self._currentMode == None:
             self.setCurrentMode(self._controller.getDataManager().getWSLEDStripModes()["off"])
             return
-            
+
         if not isTestMode():
             self._currentMode.update(self)
         else:
             pass
+
+    # Funcs
+
+    def setPixelColor(self, index, red, green, blue, white):
+         self._strip.setPixelColor(index, Color(red, green, blue, white))
 
     # Getter
 
