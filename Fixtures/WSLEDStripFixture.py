@@ -33,13 +33,13 @@ class WSLEDStripFixture(FixtureBase):
         if self._currentMode == None:
             self.setCurrentMode(self._controller.getDataManager().getWSLEDStripModes()["off"])
             return
-
-        self._currentMode.update(self)
-
+            
         if not isTestMode():
-            pass
+            self._currentMode.update(self)
         else:
             pass
+
+    # Getter
 
     def getStrip(self):
         return self._strip
@@ -47,3 +47,8 @@ class WSLEDStripFixture(FixtureBase):
 
     def getCurrentMode(self):
         return self._currentMode
+        
+    # Setter
+    def setCurrentMode(self, mode):
+        self._currentMode = copy.deepcopy(mode)
+        self._currentMode.onEnable(self)

@@ -88,7 +88,11 @@ class GlobalDataManager():#TODO need to re-add mode settings saving but low prio
 
                 if handlerClass and inspect.isclass(handlerClass):
                     mode = handlerClass()
+                    if mode.getName() == "BLANK":#Required lol.
+                        continue
+
                     resultDict[mode.getName().lower()] = mode
+        return resultDict
 
     
     def getLEDStripModes(self):
