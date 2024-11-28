@@ -28,10 +28,24 @@ class WSLEDStripFixture(FixtureBase):
             self._strip = PixelStrip(self._LED_COUNT, self._LED_PIN, self._LED_FREQ_HZ, self._LED_DMA, self._LED_INVERT, self._LED_BRIGHTNESS, self._LED_CHANNEL)
             self._strip.begin()
 
+
+    def wheel(pos):#Only for testing prolly will delete / credit source.
+        """Generate rainbow colors across 0-255 positions."""
+        if pos < 85:
+            return Color(pos * 3, 255 - pos * 3, 0)
+        elif pos < 170:
+            pos -= 85
+            return Color(255 - pos * 3, 0, pos * 3)
+        else:
+            pos -= 170
+            return Color(0, pos * 3, 255 - pos * 3)
+
     def update(self):
         if not isTestMode():
+            iterations = 1
+            wait_ms = 20
             for j in range(256 * iterations):
-                for i in range(strip.numPixels()):
-                    strip.setPixelColor(i, wheel((i + j) & 255))
-                strip.show()
+                for i in range(self._strip.numPixels()):
+                    self._strip.setPixelColor(i, self.wheel((i + j) & 255))
+                self._strip.show()
                 time.sleep(wait_ms / 1000.0)
