@@ -1,4 +1,4 @@
-from Resources.LEDStripModes.BlankMode import *
+from Resources.BlankMode import *
 from Settings.Setting import *
 from Resources.Utils import msDelay
 
@@ -14,6 +14,7 @@ class OneTwoStepMode(Mode):#TODO complete this.
 
     def __init__(self):
         self._name = "OneTwoStep"
+        self._fixtureType = "LEDStrip"
         self.settings = [
             Setting("RedFrom", "Sets the Red levels.", 255.0, float),                           # 0
             Setting("GreenFrom", "Sets the Green levels.", 0.0, float),                         # 1

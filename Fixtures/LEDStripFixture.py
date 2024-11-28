@@ -32,8 +32,7 @@ class LEDStripFixture(FixtureBase):
     def update(self):
         currentMode = self._currentMode
         if currentMode == None:
-            self.setCurrentMode(self._controller.getDataManager().getLEDStripModes()["colourcycle"])
-            print("Test")
+            self.setCurrentMode(self._controller.getDataManager().getLEDStripModes()["off"])
             return
 
         self._currentMode.update(self)

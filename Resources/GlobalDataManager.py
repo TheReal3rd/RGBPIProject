@@ -45,13 +45,15 @@ import asyncio
 class GlobalDataManager():#TODO need to re-add mode settings saving but low priority.
 
     #LED Strip Data
-    stripModes = {}
+    _stripModes = {}
 
-    #LED Addressible Strip Data
+    #WS LED Addressible Strip Data
+    _wsStripModes = {}
 
 
     def __init__(self):
-        self.loadLEDStripModes()
+        self._stripModes = self.loadModes("LEDStripModes")
+        self._wsStripModes = self.loadModes("WSLEDStripModes")
 
     ## Universal funcs
 
@@ -59,26 +61,24 @@ class GlobalDataManager():#TODO need to re-add mode settings saving but low prio
         match (type(fixture).__name__):
             case "LEDStripFixture":
                 return self.getLEDStripModes()
+            case "WSLEDStripFixture":
+                return self.getWSLEDStripModes()
             case _:
                 return None
-
-
-    ## LED Strip specific
     
-    def loadLEDStripModes(self):
+    def loadModes(self, folderName):
         current_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
         current_module_name = os.path.splitext(os.path.basename(current_dir))[0]
+        resultDict = {}
 
-        loadedModesList = []
-
-        for file in glob.glob(current_dir + "/LEDStripModes/*.py"):
+        for file in glob.glob("{currentDir}/{folderName}/*.py".format(currentDir=current_dir, folderName=folderName)):
             name = os.path.splitext(os.path.basename(file))[0]
 
             # Ignore __ files
             if name.startswith("__"):
                 continue
 
-            module = importlib.import_module("." + name, package="Resources.LEDStripModes")
+            module = importlib.import_module("." + name, package="Resources.{folderName}".format(folderName=folderName))
 
             for member in dir(module):
                 if not member.endswith("Mode"):
@@ -86,15 +86,13 @@ class GlobalDataManager():#TODO need to re-add mode settings saving but low prio
 
                 handlerClass = getattr(module, member)
 
-                if handlerClass and inspect.isclass(handlerClass) and not handlerClass.__name__ == "BlankMode":
+                if handlerClass and inspect.isclass(handlerClass):
                     mode = handlerClass()
-                    if mode.getName() == "BLANK":
-                        continue
-                   
-                    self.stripModes[mode.getName().lower()] = mode
-                    loadedModesList.append(mode.getName())
+                    resultDict[mode.getName().lower()] = mode
 
-        print("LEDStripModes Loaded: {names}".format(names = loadedModesList))
-
+    
     def getLEDStripModes(self):
-        return self.stripModes
+        return self._stripModes
+
+    def getWSLEDStripModes(self):
+        return self._wsStripModes

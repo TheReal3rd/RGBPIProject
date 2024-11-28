@@ -1,4 +1,4 @@
-from Resources.LEDStripModes.BlankMode import *
+from Resources.BlankMode import *
 from Settings.Setting import *
 
 from Resources.Utils import *
@@ -25,6 +25,7 @@ class FlashColourCycleMode(Mode):
 
     def __init__(self):
         self._name = "FlashColourCycle"
+        self._fixtureType = "LEDStrip"
         self.settings = [
             Setting("Brightness", "How bright the colours will be.", 255, float),
             Setting("StepSpeed", "The speed it transitions.", 5, float),

@@ -2,11 +2,12 @@ from Settings.Setting import *
 #Just a template Mode.
 class Mode():
     _name = None
-
+    _fixtureType = None
     settings = []
 
     def __init__(self):
         self._name = "BLANK"
+        self._fixtureType = "UnspecifiedType"
 
     def update(self, fixture):
         pass

@@ -1,4 +1,4 @@
-from Resources.LEDStripModes.BlankMode import *
+from Resources.BlankMode import *
 from Settings.Setting import *
 from Resources.Utils import *
 
@@ -20,6 +20,7 @@ class RandomMode(Mode):
 
     def __init__(self):
         self._name = "Random"
+        self._fixtureType = "LEDStrip"
         self.settings = [
             Setting("Delay", "Delay between colour changes.", 0.25, float),
             Setting("FadingTransition", "Linearly transition to the next colour.", True, bool)

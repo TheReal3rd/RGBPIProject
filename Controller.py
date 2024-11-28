@@ -68,9 +68,9 @@ class Controller():
                     finalFixture = WSLEDStripFixture(name, self, ctlPin, ledCount)
                     self._fixtures[name.lower()] = finalFixture
 
-                    # if "CurrentMode" in data.keys():
-                    #     currentMode = self._dataManager.getLEDStripModes()[data["CurrentMode"].lower()]
-                    #    finalFixture.setCurrentMode(currentMode)
+                    if "CurrentMode" in data.keys():
+                        currentMode = self._dataManager.getWSLEDStripModes()[data["CurrentMode"].lower()]
+                        finalFixture.setCurrentMode(currentMode)
 
                     fixtureAddedList.append("{name}-{type}".format(name=name, type="WSLEDStrip"))
 

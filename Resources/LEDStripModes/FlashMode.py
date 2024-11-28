@@ -1,4 +1,4 @@
-from Resources.LEDStripModes.BlankMode import *
+from Resources.BlankMode import *
 from Settings.Setting import *
 
 from Resources.Utils import *
@@ -19,6 +19,7 @@ class FlashMode(Mode):
 
     def __init__(self):
         self._name = "Flash"
+        self._fixtureType = "LEDStrip"
         self.settings = [
             Setting("R", "Colour Red", 0, float),#1
             Setting("G", "Colour Green", 255, float),#2
