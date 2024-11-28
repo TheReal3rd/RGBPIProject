@@ -1,5 +1,7 @@
 #This is used to manage all fixtures.
 from Fixtures.LEDStripFixture import *
+from Fixtures.WSLEDStripFixture import *
+from Resources.Utils import keysWithinDictCheck
 
 import glob
 
@@ -35,7 +37,7 @@ class Controller():
             fixture = data["Type"]
             match(fixture):
                 case "LEDStrip":
-                    if not "Name" in data.keys() or not "RED_PIN" in data.keys() or not "GREEN_PIN" in data.keys() or not "BLUE_PIN" in data.keys():#TODO improve this later.
+                    if not keysWithinDictCheck(["Name", "RED_PIN", "GREEN_PIN", "BLUE_PIN"], data):
                         fName = str(file).replace(current_dir+"/configs/fixtures/", "")
                         print("Invalid fixture config at {fileName}. Missing config data required for a LEDStrip. Must have a 'Name' 'RED_PIN' 'GREEN_PIN' 'BLUE_PIN' to operate this fixture.".format(fileName=fName))
                         continue
@@ -53,6 +55,26 @@ class Controller():
                         finalFixture.setCurrentMode(currentMode)
 
                     fixtureAddedList.append("{name}-{type}".format(name=name, type="LEDStrip"))
+                case "WSLEDStrip":
+                    if not keysWithinDictCheck(["Name", "LED_COUNT", "CTL_PIN"], data):
+                        fName = str(file).replace(current_dir+"/configs/fixtures/", "")
+                        print("Invalid fixture config at {fileName}. Missing config data required for a WSLEDStrip. Must have a 'Name' 'CTL_PIN' 'LED_COUNT' to operate this fixture.".format(fileName=fName))
+                        continue
+
+                    name = data["Name"]
+                    ctlPin = data["CTL_PIN"]
+                    ledCount = data["LED_COUNT"]
+
+                    finalFixture = WSLEDStripFixture(name, self, ctlPin, ledCount)
+                    self._fixtures[name.lower()] = finalFixture
+
+                    # if "CurrentMode" in data.keys():
+                    #     currentMode = self._dataManager.getLEDStripModes()[data["CurrentMode"].lower()]
+                    #    finalFixture.setCurrentMode(currentMode)
+
+                    fixtureAddedList.append("{name}-{type}".format(name=name, type="WSLEDStrip"))
+
+
 
         print("Loaded Fixtures: {fixList}".format(fixList=fixtureAddedList))
     # Funcs

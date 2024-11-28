@@ -1,3 +1,6 @@
+#Sources
+#   https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/examples/strandtest.py
+
 from Fixtures.FixtureBase import *
 from Resources.Utils import clamp
 from Main import *

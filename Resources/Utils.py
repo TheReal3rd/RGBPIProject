@@ -26,6 +26,11 @@ def fetchDeviceTemps():# This is intended to run on Pi so i only gonna write thi
     else:
         return "-1"
 
+def keysWithinDictCheck(keysArr, dict):
+    for key in keysArr:
+        if not key in dict.keys():
+            return False
+    return True
 
 class msDelay():
     startMs = 0
