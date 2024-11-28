@@ -29,7 +29,7 @@ class WSLEDStripFixture(FixtureBase):
             self._strip.begin()
 
 
-    def wheel(pos):#Only for testing prolly will delete / credit source.
+    def wheel(self, pos):#Only for testing prolly will delete / credit source.
         """Generate rainbow colors across 0-255 positions."""
         if pos < 85:
             return Color(pos * 3, 255 - pos * 3, 0)
