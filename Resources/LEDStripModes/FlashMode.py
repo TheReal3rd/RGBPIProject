@@ -52,7 +52,7 @@ class FlashMode(Mode):
                     if self.brightness == 0:
                         self.state = True
 
-                self.controller.setColour(self.red, self.green, self.blue, self.brightness)
+                fixture.setColour(self.red, self.green, self.blue, self.brightness)
             else:
                 if self.state:
                     self.red = moveTowards(self.red, toRed, step)
@@ -67,7 +67,7 @@ class FlashMode(Mode):
                     if self.red == 0 and self.green == 0 and self.blue == 0:
                         self.state = True
 
-                self.controller.setColour(self.red, self.green, self.blue, self.settings[3].getValue())
+                fixture.setColour(self.red, self.green, self.blue, self.settings[3].getValue())
         else:
             if self.state:
                 fixture.setColour(toRed, toGreen, toBlue, self.settings[3].getValue())

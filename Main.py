@@ -11,6 +11,7 @@ from Controller import *
 from CommandLine.CommandManager import *
 from WebPanel.WebPanelManager import *
 from Resources.GlobalDataManager import *
+from Visualiser.VisualiserManager import *
 from Settings.Setting import *
 import os
 import os.path
@@ -84,6 +85,11 @@ if __name__ == "__main__":
 	print("RGB Controller started.")
 	fixController = Controller(dataManager)
 
+	if settings[1].getValue():
+		print("Visualiser Manager started.")
+		visualiserManager = VisualiserManagerPygame(fixController)
+		visualiserManager.start()
+
 	if settings[2].getValue():
 		print("Command Manager started.")
 		commandLine = CommandManager(fixController)
@@ -93,6 +99,8 @@ if __name__ == "__main__":
 		print("Webpanel Manager started.")
 		webPanel = WebpanelManager(dataManager, fixController, settings[4].getValue(), settings[5].getValue())
 		webPanel.start()
+
+
 
 	while True:
 		fixController.update()

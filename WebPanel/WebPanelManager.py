@@ -328,7 +328,8 @@ class WebServer(BaseHTTPRequestHandler):
             mode = "None"
             if not fixture.getCurrentMode() == None:
                 mode = fixture.getCurrentMode().getName()
-            result += result + '<tr><td>{name}</td><td>{fixType}</td><td>{fixMode}</td><td><a href="/ViewFixture?fixture={nameLower}">Edit &#8627;</a></td></tr>'.format(name=fixture.getName(), fixType=type(fixture).__name__, fixMode=mode, nameLower=fixture.getName().lower())
+            print(fix)
+            result = result + '<tr><td>{name}</td><td>{fixType}</td><td>{fixMode}</td><td><a href="/ViewFixture?fixture={nameLower}">Edit &#8627;</a></td></tr>'.format(name=fixture.getName(), fixType=type(fixture).__name__, fixMode=mode, nameLower=fixture.getName().lower())
         return result
 
     def getFixtureCount(self):

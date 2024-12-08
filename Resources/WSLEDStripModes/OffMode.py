@@ -2,7 +2,7 @@ from Resources.BlankMode import *
 from Settings.Setting import *
 from rpi_ws281x import Color
 
-#Simply do nothing. ez But yea found using None and handling the user of None each time waste time. So thats why this mode exists.
+#Not working irc.
 class OffMode(Mode):
 
     def __init__(self):

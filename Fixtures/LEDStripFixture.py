@@ -37,6 +37,9 @@ class LEDStripFixture(FixtureBase):
 
         self._currentMode.update(self)
 
+    def renderFixture(self, vmInstance, pygame, screen, vec2Pos, font):
+        pass
+
     #Pins
 
     def sendToPin(self, pin, value):

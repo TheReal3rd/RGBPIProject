@@ -1,6 +1,7 @@
 from Resources.BlankMode import *
 from Settings.Setting import *
 from rpi_ws281x import Color
+import time
 
 #Set the strip to a solid colour.
 class SetMode(Mode):
@@ -18,6 +19,7 @@ class SetMode(Mode):
     def update(self, fixture):
         for i in range(fixture.getStrip().numPixels()):
             fixture.setPixelColor(i, self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), 0)
-        fixture.getStrip().setBrightness(self.setting[3].getValue())
+        fixture.getStrip().setBrightness(self.settings[3].getValue())
         fixture.getStrip().show()
+        time.sleep(10 / 1000)
         
