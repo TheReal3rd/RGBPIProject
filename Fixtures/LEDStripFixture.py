@@ -2,8 +2,9 @@
 #   https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/examples/strandtest.py
 
 from Fixtures.FixtureBase import *
-from Resources.Utils import clamp
+from Resources.Utils import clamp, rgbInvert
 from Main import *
+
 import copy
 
 class LEDStripFixture(FixtureBase):
@@ -28,6 +29,8 @@ class LEDStripFixture(FixtureBase):
         self._RED_PIN = redPin
         self._GREEN_PIN = greenPin
         self._BLUE_PIN = bluePin
+        self.setWidth(128)
+        self.setHeight(720)
 
     def update(self):
         currentMode = self._currentMode
@@ -38,7 +41,14 @@ class LEDStripFixture(FixtureBase):
         self._currentMode.update(self)
 
     def renderFixture(self, vmInstance, pygame, screen, vec2Pos, font):
-        pass
+        pygame.draw.rect(screen, (self._red, self._green, self._blue), pygame.Rect(vec2Pos[0], vec2Pos[1], self._width, self._height))
+
+        colourInvert = rgbInvert(self._red, self._green, self._blue)
+        nameLabel = font.render("{name}".format(name = self._name), 1, (colourInvert[0], colourInvert[1], colourInvert[2]))
+        screen.blit(nameLabel, (vec2Pos[0], vec2Pos[1]))
+
+        modeLabel = font.render("{mode}".format(mode = self._currentMode.getName()), 1, (colourInvert[0], colourInvert[1], colourInvert[2]))
+        screen.blit(modeLabel, (vec2Pos[0], vec2Pos[1] + 16))
 
     #Pins
 

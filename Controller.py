@@ -2,8 +2,10 @@
 from Fixtures.LEDStripFixture import *
 from Fixtures.WSLEDStripFixture import *
 from Resources.Utils import keysWithinDictCheck
+from Main import isTestMode
 
 import glob
+import time
 
 class Controller():
     _dataManager = None
@@ -13,8 +15,10 @@ class Controller():
         self._dataManager = dataManager
         self.buildFixtures()
 
-    def update(self):
+    def update(self):#Maybe add a time delay to updating the fixtures anyway?
         for fix in self._fixtures.keys():
+            if isTestMode():
+                time.sleep(0.02)
             fixture = self._fixtures[fix]
             fixture.update()
             fixture.updatePins()

@@ -15,7 +15,9 @@ class VisualiserManagerPygame(threading.Thread):
 
     _screen = None
 
+    #Visuliser
     _missingFixImg = None
+    _fixtureSpacing = 5
 
     def __init__(self, controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,7 +56,7 @@ class VisualiserManagerPygame(threading.Thread):
             for fixtureKey in fixtureDict:
                 fixture = fixtureDict[fixtureKey]
                 fixture.renderFixture(self, pygame, screen, (xOffset, 0), font)
-                xOffset += fixture.getWidth() + 2
+                xOffset += fixture.getWidth() + self._fixtureSpacing
 
             # Flip the display
             pygame.display.flip()
