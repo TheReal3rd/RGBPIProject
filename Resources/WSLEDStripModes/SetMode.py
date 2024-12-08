@@ -7,6 +7,7 @@ import time
 class SetMode(Mode):
 
     _finished = False
+    _clearing = True
 
     def __init__(self):
         self._name = "Set"
@@ -19,15 +20,20 @@ class SetMode(Mode):
         ]
 
     def update(self, fixture):
-        if not self._finished:
-            for i in range(fixture.getNumPixels()):
-                fixture.setPixelColour(i, self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), 0)
-                fixture.setBrightness(self.settings[3].getValue())
-                fixture.show()
-                time.sleep(0.01)
-            self._finished = True
+        if self._clearing:
+            fixture.wipeColour()
+            self._clearing = False
+            self._finished = False
+        else:
+            if not self._finished:
+                for i in range(fixture.getNumPixels()):
+                    fixture.setPixelColour(i, self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), 0)
+                    fixture.setBrightness(self.settings[3].getValue())
+                    fixture.show()
+                    time.sleep(0.01)
+                self._finished = True
 
     def onSettingChange(self, fixture, settings):
         print("Setting changed!")
-        self._finished = False
-        fixture.wipeColour()
+        self._clearing = True
+        

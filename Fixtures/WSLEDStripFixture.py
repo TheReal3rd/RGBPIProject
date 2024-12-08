@@ -35,7 +35,6 @@ class WSLEDStripFixture(FixtureBase):
         if not isTestMode():
             self._strip = PixelStrip(self._LED_COUNT, self._LED_PIN, self._LED_FREQ_HZ, self._LED_DMA, self._LED_INVERT, self._LED_BRIGHTNESS, self._LED_CHANNEL)
             self._strip.begin()
-            del self._pixels
         else:
             for x in range(0, self._pixelAmount):
                 self._pixels.append( (255, 255, 255) )

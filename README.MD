@@ -11,7 +11,7 @@ Currently the whole script is being reworked to support multiple lights and diff
 - Command System (Working but needs commands being reimplemented.).
 - Settings (Saving needs reimplementing.).
 - Controller.
-- Visualiser (Needs to be reworked no longer working.).
+- Visualiser.
 - Webpanel.
 
 ## TODO:
