@@ -11,7 +11,4 @@ class OffMode(Mode):
         self.settings = []
 
     def update(self, fixture):
-        for i in range(fixture.getStrip().numPixels()):
-            fixture.getStrip().setPixelColor(i, Color(0,0,0,0))
-        fixture.setBrightness(0)
-        fixture.getStrip().show()
+        fixture.wipeColour()

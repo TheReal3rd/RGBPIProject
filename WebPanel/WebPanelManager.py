@@ -128,6 +128,8 @@ class WebServer(BaseHTTPRequestHandler):
                                     else:
                                         setting.setValue(valueType(newValue))
 
+                                    currentMode.onSettingChange(fixture, [setting])
+
                                     message = "The value has successfully been changed."
                                 except Exception as err:
                                     print(err)

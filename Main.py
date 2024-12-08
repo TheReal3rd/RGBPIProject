@@ -100,7 +100,5 @@ if __name__ == "__main__":
 		webPanel = WebpanelManager(dataManager, fixController, settings[4].getValue(), settings[5].getValue())
 		webPanel.start()
 
-
-
 	while True:
 		fixController.update()

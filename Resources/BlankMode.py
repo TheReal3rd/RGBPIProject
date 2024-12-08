@@ -15,6 +15,9 @@ class Mode():
     def onEnable(self, fixture):
         pass
 
+    def onSettingChange(self, fixture, settings):
+        pass
+
     # Getter
 
     def getSetting(self, name):
