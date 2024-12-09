@@ -17,15 +17,14 @@ import os
 import os.path
 import json
 
-testMode = True
 
 settings = [
-	Setting("OnStartMode", "The mode that starts when the program starts.", "ColourCycle", str),									#0 Doesn't apply anymore as its moved to the fixture configs. TODO repurpose this.
-	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),  #1
-	Setting("UseCommand", "Enable or disable the command system.", True, bool),														#2
-	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),													#3
-	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),								#4
-	Setting("WebPort", "Webpanel port.", 8080, int)#5
+	Setting("TestMode", "Puts the software in a test state where it won't send any GPIO commands. For use on a standard computer.", True, bool),#0
+	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),  			#1
+	Setting("UseCommand", "Enable or disable the command system.", True, bool),																	#2
+	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),																#3
+	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),											#4
+	Setting("WebPort", "Webpanel port.", 8080, int)																								#5
 ]
 
 #Funcs
@@ -66,18 +65,18 @@ def close(controller):
 	os._exit(0)
 
 def isTestMode():
-	return testMode
+	return settings[0].getValue()
 
 if __name__ == "__main__":
-	if not testMode:
-		os.system("sudo pigpiod")
-
 	#Config Load / Save
 	print("Loading the settings.")
 	if not os.path.isfile("configs/config.json"):
 		saveMain()
 	else:
 		loadMain()
+
+	if not isTestMode():
+		os.system("sudo pigpiod")
 
 	print("GlobalData started.")
 	dataManager = GlobalDataManager()
