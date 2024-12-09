@@ -27,6 +27,8 @@ settings = [
 	Setting("WebPort", "Webpanel port.", 8080, int)																								#5
 ]
 
+testMode = True
+
 #Funcs
 def saveMain():
 	print("Save")
@@ -65,7 +67,7 @@ def close(controller):
 	os._exit(0)
 
 def isTestMode():
-	return settings[0].getValue()
+	return testMode
 
 if __name__ == "__main__":
 	#Config Load / Save
@@ -75,8 +77,13 @@ if __name__ == "__main__":
 	else:
 		loadMain()
 
+	testMode = bool(settings[0].getValue())
+
 	if not isTestMode():
 		os.system("sudo pigpiod")
+		print("Not in a code testing mode.")
+	else:
+		print("In a code testing mode.")
 
 	print("GlobalData started.")
 	dataManager = GlobalDataManager()

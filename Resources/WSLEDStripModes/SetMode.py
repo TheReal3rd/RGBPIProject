@@ -21,7 +21,7 @@ class SetMode(Mode):
 
     def update(self, fixture):
         if self._clearing:
-            fixture.wipeColour(0)
+            fixture.wipeColour(0.001)
             self._clearing = False
             self._finished = False
         else:

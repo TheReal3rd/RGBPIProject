@@ -1,1 +1,1 @@
-{"TestMode": true, "OnStartMode": "Set", "UseVisualiser": true, "UseCommand": true, "UseWebpanel": true, "WebAddress": "dev.third.net", "WebPort": 8080}
+{"TestMode": true, "UseVisualiser": true, "UseCommand": true, "UseWebpanel": true, "WebAddress": "dev.third.net", "WebPort": 8080}
