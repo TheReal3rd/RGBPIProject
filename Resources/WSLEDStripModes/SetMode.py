@@ -21,7 +21,7 @@ class SetMode(Mode):
 
     def update(self, fixture):
         if self._clearing:
-            fixture.wipeColour()
+            fixture.wipeColour(0)
             self._clearing = False
             self._finished = False
         else:
@@ -30,10 +30,9 @@ class SetMode(Mode):
                     fixture.setPixelColour(i, self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), 0)
                     fixture.setBrightness(self.settings[3].getValue())
                     fixture.show()
-                    time.sleep(0.01)
+                    time.sleep(0.001)
                 self._finished = True
 
     def onSettingChange(self, fixture, settings):
-        print("Setting changed!")
         self._clearing = True
         
