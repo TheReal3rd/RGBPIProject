@@ -92,7 +92,7 @@ class WSLEDStripFixture(FixtureBase):
         if not isTestMode():
             self._strip.setBrightness(value)
 
-    def wipeColour(self, delay=0.001):
+    def wipeColour(self, delay=0.0001):
         for x in range(self.getNumPixels()):
             self.setPixelColour(x, 0, 0, 0, 0)
             self.show()

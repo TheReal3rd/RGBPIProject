@@ -17,7 +17,6 @@ import os
 import os.path
 import json
 
-global testMode
 testMode = True
 
 settings = [
@@ -77,7 +76,7 @@ if __name__ == "__main__":
 	else:
 		loadMain()
 
-	testMode = bool(settings[0].getValue())
+	#testMode = bool(settings[0].getValue()) IDK why this breaks the code needs some work i guess.
 
 	if not isTestMode():
 		os.system("sudo pigpiod")
