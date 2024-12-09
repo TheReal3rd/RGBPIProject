@@ -17,6 +17,8 @@ import os
 import os.path
 import json
 
+global testMode
+testMode = True
 
 settings = [
 	Setting("TestMode", "Puts the software in a test state where it won't send any GPIO commands. For use on a standard computer.", True, bool),#0
@@ -26,8 +28,6 @@ settings = [
 	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),											#4
 	Setting("WebPort", "Webpanel port.", 8080, int)																								#5
 ]
-
-testMode = True
 
 #Funcs
 def saveMain():
