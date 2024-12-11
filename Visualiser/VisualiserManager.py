@@ -4,7 +4,6 @@
 #   https://stackoverflow.com/questions/51591456/can-i-use-rgb-in-tkinter
 #   https://realpython.com/pygame-a-primer/
 
-#TODO Add fallbacks.
 from Resources.Utils import *
 import _thread
 import threading

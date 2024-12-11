@@ -11,4 +11,4 @@ class OffMode(Mode):
         self.settings = []
 
     def update(self, fixture):
-        fixture.wipeColour(0)
+        fixture.wipeColour(1)

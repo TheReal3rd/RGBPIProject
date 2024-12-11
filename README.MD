@@ -17,7 +17,6 @@ Currently the whole script is being reworked to support multiple lights and diff
 ## TODO:
 - Webpanel. Finish stylising.
 - Add multi strip support. Control multiple type of LED Strips inderpendently.
-- Add WS2812 support for addressible LEDS.
 - Add These Modes: Sound React. Colour 1 2 Step.
 - Add input support. GPIO Buttons, brightness sensors, Any form of input really. 
 - Fix saving when setting change for main config. Keeps getting overwritten. Prolly thread related. Maybe use events or lock writting and reading when performing actions?
@@ -36,7 +35,7 @@ I am planning to do an addressible LED strip next. I maybe intergrate the contro
 - [Hardware guide here.](https://dordnung.de/raspberrypi-ledstrip/) 
 - [What i used as a template.](https://github.com/dordnung/raspberrypi-ledstrip/tree/master) 
 - [Class loading system.](https://stackoverflow.com/questions/3178285/list-classes-in-directory-python)
-- [TKinter used for test GUI.](https://realpython.com/python-gui-tkinter/) 
+- [Pygame used for Visualiser GUI.](https://github.com/pygame) 
 - [WebServer Source.](https://pythonbasics.org/webserver/)
 - [Tempeture Monitor.](https://search.brave.com/search?q=get+raspberry+pi+temperature&spellcheck=0&source=alteredQuery&summary=1&conversation=a01dc941af2d7d224f0a2c&summary_og=471790e94269a57f25bf41)
 - [Hardware guide here](https://dordnung.de/raspberrypi-ledstrip/) 
