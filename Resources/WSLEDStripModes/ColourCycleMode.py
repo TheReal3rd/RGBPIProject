@@ -27,9 +27,9 @@ class ColourCycleMode(Mode):
             state %= 360.0
 
             colour = colorsys.hsv_to_rgb(float(state / 360.0), 1.0, 1.0)
-            r = colour[0] * 255
-            g = colour[1] * 255
-            b = colour[2] * 255
+            r = int( colour[0] * 255 )
+            g = int( colour[1] * 255 )
+            b = int( colour[2] * 255 )
 
             fixture.setPixelColour(i, r, g, b, 0)
             fixture.setBrightness(self.settings[1].getValue())
