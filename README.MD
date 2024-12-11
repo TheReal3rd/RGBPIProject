@@ -21,6 +21,7 @@ Currently the whole script is being reworked to support multiple lights and diff
 - Add input support. GPIO Buttons, brightness sensors, Any form of input really. 
 - Fix saving when setting change for main config. Keeps getting overwritten. Prolly thread related. Maybe use events or lock writting and reading when performing actions?
 - Add savable mode configs / presets.
+- Add Slave and Master System. One rpi will act as a Master and send commands and trade information to and from Slave systems. 
 
 The Visualiser is intended to speed up the process of creating patterns and testing them. So you can visually see what would happen.
 
