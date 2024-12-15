@@ -17,6 +17,7 @@ import os
 import os.path
 import json
 
+version = 1.1
 testMode = True
 
 settings = [
@@ -56,14 +57,16 @@ def loadMain():
 			x.setValue(x.getDefaultValue())
 			print("{SettingName} has been reset".format(SettingName=x.getName()))
 
+def close(controller):
+	controller.close()
+	os._exit(0)
 
 #Getter 
 def getMainSettings():
 	return settings
 
-def close(controller):
-	controller.close()
-	os._exit(0)
+def getVersion():
+	return version
 
 def isTestMode():
 	return testMode
@@ -92,7 +95,7 @@ if __name__ == "__main__":
 
 	if settings[1].getValue():
 		print("Visualiser Manager started.")
-		visualiserManager = VisualiserManagerPygame(fixController)
+		visualiserManager = VisualiserManagerPygame(fixController, dataManager)
 		visualiserManager.start()
 
 	if settings[2].getValue():

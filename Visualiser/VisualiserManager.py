@@ -4,6 +4,7 @@
 #   https://stackoverflow.com/questions/51591456/can-i-use-rgb-in-tkinter
 #   https://realpython.com/pygame-a-primer/
 
+from Visualiser.Components.ButtonComponent import *
 from Resources.Utils import *
 import _thread
 import threading
@@ -11,6 +12,7 @@ import time
 
 class VisualiserManagerPygame(threading.Thread):
     _controller = None
+    _dataManager = None
 
     _screen = None
 
@@ -18,9 +20,21 @@ class VisualiserManagerPygame(threading.Thread):
     _missingFixImg = None
     _fixtureSpacing = 5
 
-    def __init__(self, controller, *args, **kwargs):
+    _components = []
+
+    def __init__(self, controller, dataManager, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._controller = controller
+        self._dataManager = dataManager
+
+        def blackOutLightsCall():
+            fixtures = controller.getFixtures()
+            for fixKey in fixtures:
+                fixture = fixtures[fixKey]
+                modes = dataManager.getFixureModes(fixture)
+                if keysWithinDictCheck(["off"], modes):
+                    fixture.setCurrentMode(modes["off"])
+        self._components.append(ButtonComponent("Blackout", (10, 650), (40, 40), blackOutLightsCall))
 
     def run(self):
         import pygame
@@ -30,7 +44,7 @@ class VisualiserManagerPygame(threading.Thread):
         fps = 60
         self._missingFixImg = pygame.image.load("Visualiser/Textures/MissingFixture.png")
 
-        self._screen = pygame.display.set_mode([1280, 720])
+        self._screen = pygame.display.set_mode([1280, 720])#TODO add screen size checks and possible fallback options such as resize elements and more.
         screen = self._screen
         pygame.display.set_caption("RGB Controller Visualiser")
 
@@ -43,19 +57,33 @@ class VisualiserManagerPygame(threading.Thread):
 
         running = True
         while running:
+            mousePos = pygame.mouse.get_pos()
 
             # Did the user click the window close button?
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    #mousePos = pygame.mouse.get_pos()
+                    for component in self._components:
+                        if component.isHover():
+                            component.onClick(event.pos)
+
             screen.fill((0, 0, 0))
+
             xOffset = 0
             fixtureDict = self._controller.getFixtures()
             for fixtureKey in fixtureDict:
                 fixture = fixtureDict[fixtureKey]
                 fixture.renderFixture(self, pygame, screen, (xOffset, 0), font)
                 xOffset += fixture.getWidth() + self._fixtureSpacing
+
+            pygame.draw.rect(screen, (75, 75, 75), pygame.Rect(0, 640, 1280, 720))
+
+            for component in self._components:
+                component.render(self, pygame, screen, font)
+                component.onHover(mousePos)
 
             # Flip the display
             pygame.display.flip()

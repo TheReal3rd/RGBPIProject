@@ -30,7 +30,7 @@ class LEDStripFixture(FixtureBase):
         self._GREEN_PIN = greenPin
         self._BLUE_PIN = bluePin
         self.setWidth(128)
-        self.setHeight(720)
+        self.setHeight(640)
 
     def update(self):
         currentMode = self._currentMode

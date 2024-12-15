@@ -24,14 +24,14 @@ class WSLEDStripFixture(FixtureBase):
     #Visualiser
     _pixels = []
     _pixelHeight = 0
-    _pixelAmount = 100
+    _pixelAmount = 40
 
     def __init__(self, name, controller, ledPin, ledCount):
         super().__init__(name, controller)
         self._LED_COUNT = ledCount
         self._LED_PIN = ledPin
         self.setWidth(128)
-        self.setHeight(720)
+        self.setHeight(640)
         if not isTestMode():
             self._strip = PixelStrip(self._LED_COUNT, self._LED_PIN, self._LED_FREQ_HZ, self._LED_DMA, self._LED_INVERT, self._LED_BRIGHTNESS, self._LED_CHANNEL)
             self._strip.begin()
@@ -65,12 +65,17 @@ class WSLEDStripFixture(FixtureBase):
 
     def stop(self):
         if not isTestMode():
-            self.wipeColour(0.0001)
+            self.wipeColour()
 
     # Funcs
 
     def calcPixelHeight(self):
-        return 720 / self.getNumPixels()
+        height1 = self.getHeight() / self.getNumPixels()
+
+        while ((height1 + 2) * self.getNumPixels()) > self.getHeight():
+            height1 -= 0.5
+
+        return height1
 
     def setPixelColour(self, index, red, green, blue, white):
         if not isTestMode():
