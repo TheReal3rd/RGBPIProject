@@ -17,9 +17,19 @@ class ComponentBase():
     def render(self, vmInstance, pygame, screen, font):
         pass
 
-    def onClick(self, mousePos):
+    #Triggered when the component is clicked when mouse is within its bounds.
+    def onClick(self, mousePos, event):
         pass
 
+    #Triggered when key is pressed and the component is hovered over.
+    def onKey(self, keyData, down, event):
+        pass
+
+    #Unfiltered event access. No checks just directly sent.
+    def onEvent(self, pygame, event):
+        pass
+
+    #No need to override this as this just changes hover status.
     def onHover(self, mousePos):
         if self.posIntercept(mousePos):
             self._hover = True
