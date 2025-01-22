@@ -32,6 +32,12 @@ def keysWithinDictCheck(keysArr, dict):
             return False
     return True
 
+def toPercentage(minValue, maxValie, value):
+    return ((value - minValue) * 100) / (maxValie - minValue)
+
+def fromPercentage(minValue, maxValie, value):
+    return (((maxValie - minValue) * (value)) + minValue) / 100
+
 class msDelay():
     startMs = 0
 

@@ -17,6 +17,10 @@ class ScreenBase():
     def render(self, vmInstance, pygame, screen, font):
         pass
 
+    def register(self, newComponent):
+        self._components.append(newComponent)
+        return newComponent
+
     #Unfiltered event access. No checks just directly sent.
     def onEvent(self, pygame, event):
         pass

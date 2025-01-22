@@ -8,6 +8,7 @@
 #from Visualiser.Components.StringInputComponent import *
 from Visualiser.Screens.MainScreen import *
 from Resources.Utils import *
+
 import _thread
 import threading
 import time
@@ -36,10 +37,10 @@ class VisualiserManagerPygame(threading.Thread):
         clock = pygame.time.Clock()
         fps = 60
         self._missingFixImg = pygame.image.load("Visualiser/Textures/MissingFixture.png")
-
         self._screen = pygame.display.set_mode([1280, 720])#TODO add screen size checks and possible fallback options such as resize elements and more.
         screen = self._screen
-        pygame.display.set_caption("RGB Controller Visualiser")
+        from Main import getVersion
+        pygame.display.set_caption("RGB Controller Visualiser Vers: {version}".format(version=getVersion()))
 
         font = pygame.font.SysFont("ubuntu", 18, bold=True)
 

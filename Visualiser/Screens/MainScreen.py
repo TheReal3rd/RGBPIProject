@@ -2,7 +2,7 @@ from Visualiser.Screens.ScreenBase import *
 from Visualiser.Components.ButtonComponent import *
 from Visualiser.Components.StringInputComponent import *
 from Visualiser.Components.HorizontalScrollBarComponent import *
-from Resources.Utils import keysWithinDictCheck
+from Resources.Utils import keysWithinDictCheck, fromPercentage
 
 class MainScreen(ScreenBase):
 
@@ -22,25 +22,28 @@ class MainScreen(ScreenBase):
                 if keysWithinDictCheck(["off"], modes):
                     fixture.setCurrentMode(modes["off"])
 
-        self._components.append(ButtonComponent("Blackout", (5, 665), (40, 40), blackOutLightsCall))
+        self.register(ButtonComponent("Blackout", (5, 665), (40, 40), blackOutLightsCall))
 
         def newFixtureScreenCall():
             print("TODO")
 
-        self._components.append(ButtonComponent("NewFix", (5, 695), (40, 40), newFixtureScreenCall))
+        self.register(ButtonComponent("NewFix", (5, 695), (40, 40), newFixtureScreenCall))
 
-        self._components.append(HorScrollBarComponent("FixtureScrollBar", (1, 640), (1278, 18)))
+        horScroll = self.register(HorScrollBarComponent("FixtureScrollBar", (1, 640), (1278, 18)))
+        def updateScrollAmount(com):
+            self._scrollXOffset = fromPercentage(0, 1278, com.getScrollAmount())
 
+        horScroll.setScrollUpdateCallback(updateScrollAmount)
 
     def render(self, vmInstance, pygame, screen, font):
         mousePos = pygame.mouse.get_pos()
 
-        xOffset = 0
+        xOffset = -self._scrollXOffset
         fixtureDict = self._controller.getFixtures()
         for fixtureKey in fixtureDict:
             fixture = fixtureDict[fixtureKey]
             fixture.renderFixture(self, pygame, screen, (xOffset, 0), font)
-            xOffset += fixture.getWidth() + self._fixtureSpacing + self._scrollXOffset
+            xOffset += (fixture.getWidth() + self._fixtureSpacing)
 
         pygame.draw.rect(screen, (75, 75, 75), pygame.Rect(0, 640, 1280, 720))
 
