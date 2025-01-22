@@ -1,6 +1,5 @@
 from Fixtures.FixtureBase import *
 from Resources.Utils import clamp
-from rpi_ws281x import PixelStrip, Color
 from Main import *
 import copy
 import time
@@ -22,7 +21,7 @@ class WSLEDStripFixture(FixtureBase):
     _currentMode = None
 
     #Visualiser
-    _pixels = []
+    _pixels = None
     _pixelHeight = 0
     _pixelAmount = 40
 
@@ -32,7 +31,9 @@ class WSLEDStripFixture(FixtureBase):
         self._LED_PIN = ledPin
         self.setWidth(128)
         self.setHeight(640)
+        self._pixels = [ledCount]
         if not isTestMode():
+            from rpi_ws281x import PixelStrip, Color
             self._strip = PixelStrip(self._LED_COUNT, self._LED_PIN, self._LED_FREQ_HZ, self._LED_DMA, self._LED_INVERT, self._LED_BRIGHTNESS, self._LED_CHANNEL)
             self._strip.begin()
         else:

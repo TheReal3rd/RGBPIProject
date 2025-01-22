@@ -31,3 +31,9 @@ class Mode():
 
     def getSettings(self):
         return self.settings
+
+    def loadLibs(self):
+        if not self._fixtureType == None:
+            match(self._fixtureType):
+                case "WSLEDStrip":
+                    from rpi_ws281x import Color

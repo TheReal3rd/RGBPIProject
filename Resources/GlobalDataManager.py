@@ -88,6 +88,7 @@ class GlobalDataManager():#TODO need to re-add mode settings saving but low prio
 
                 if handlerClass and inspect.isclass(handlerClass):
                     mode = handlerClass()
+                    mode.loadLibs()
                     if mode.getName() == "BLANK":#Required lol.
                         continue
 

@@ -16,6 +16,9 @@ from Settings.Setting import *
 import os
 import os.path
 import json
+import time
+
+global testMode
 
 version = 1.1
 testMode = True
@@ -69,7 +72,12 @@ def getVersion():
 	return version
 
 def isTestMode():
+	global testMode
 	return testMode
+
+def setTestMode(state):
+	global testMode
+	testMode = state
 
 if __name__ == "__main__":
 	#Config Load / Save
@@ -79,7 +87,9 @@ if __name__ == "__main__":
 	else:
 		loadMain()
 
-	#testMode = bool(settings[0].getValue()) IDK why this breaks the code needs some work i guess.
+	#I was being a dumbass here. smh.
+	setTestMode(bool(settings[0].getValue()))
+	time.sleep(0.1)
 
 	if not isTestMode():
 		os.system("sudo pigpiod")
