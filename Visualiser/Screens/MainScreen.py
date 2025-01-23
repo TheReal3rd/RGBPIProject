@@ -2,6 +2,7 @@ from Visualiser.Screens.ScreenBase import *
 from Visualiser.Components.ButtonComponent import *
 from Visualiser.Components.StringInputComponent import *
 from Visualiser.Components.HorizontalScrollBarComponent import *
+from Visualiser.Screens.NewFixScreen import *
 from Resources.Utils import keysWithinDictCheck, fromPercentage
 
 class MainScreen(ScreenBase):
@@ -11,8 +12,8 @@ class MainScreen(ScreenBase):
 
     _scrollXOffset = 0
 
-    def __init__(self, controller, dataManager):
-        super().__init__("RGB Controller Visualiser", controller, dataManager)
+    def __init__(self, vmInstance, controller, dataManager):
+        super().__init__("RGB Controller Visualiser", vmInstance, controller, dataManager, self)
 
         def blackOutLightsCall():
             fixtures = controller.getFixtures()
@@ -25,7 +26,7 @@ class MainScreen(ScreenBase):
         self.register(ButtonComponent("Blackout", (5, 665), (40, 40), blackOutLightsCall))
 
         def newFixtureScreenCall():
-            print("TODO")
+            self._vmInstance.changeScreen(NewFixScreen(self._vmInstance, self._controller, self._dataManager, self))
 
         self.register(ButtonComponent("NewFix", (5, 695), (40, 40), newFixtureScreenCall))
 

@@ -3,16 +3,21 @@
 class ScreenBase():
     #Screen Data
     _screenTitle = "Fill this in."
-    _components = []
+    _components = None
+    _parent = None
 
     #Access
     _controller = None
     _dataManager = None
+    _vmInstance = None
 
-    def __init__(self, title, controller, dataManager):
+    def __init__(self, title, vmInstance, controller, dataManager, parent):
         self._screenTitle = title
         self._controller = controller
         self._dataManager = dataManager
+        self._parent = parent
+        self._vmInstance = vmInstance
+        self._components = []
 
     def render(self, vmInstance, pygame, screen, font):
         pass

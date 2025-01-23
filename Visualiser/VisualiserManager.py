@@ -20,6 +20,8 @@ class VisualiserManagerPygame(threading.Thread):
     _screen = None
 
     _currentScreen = None
+    _changingScreen = False
+    _newScreen = None
 
     #Images
     _missingFixImg = None
@@ -28,7 +30,7 @@ class VisualiserManagerPygame(threading.Thread):
         super().__init__(*args, **kwargs)
         self._controller = controller
         self._dataManager = dataManager
-        self._currentScreen = MainScreen(controller, dataManager)
+        self._currentScreen = MainScreen(self, controller, dataManager)
 
     def run(self):
         import pygame
@@ -75,6 +77,9 @@ class VisualiserManagerPygame(threading.Thread):
                     for component in self._currentScreen.getComponents():
                         component.onEvent(pygame, event)
                 
+            if self._changingScreen:
+                self._currentScreen = self._newScreen
+                self._changingScreen = False
 
             screen.fill((0, 0, 0))
 
@@ -94,3 +99,7 @@ class VisualiserManagerPygame(threading.Thread):
 
     def getMissingFixImg(self):
         return self._missingFixImg
+
+    def changeScreen(self, newScreen):
+        self._changingScreen = True
+        self._newScreen = newScreen

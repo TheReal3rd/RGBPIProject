@@ -1,6 +1,5 @@
 from Resources.BlankMode import *
 from Settings.Setting import *
-from rpi_ws281x import Color
 
 #Not working irc.
 class OffMode(Mode):

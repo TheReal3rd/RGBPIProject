@@ -29,7 +29,8 @@ settings = [
 	Setting("UseCommand", "Enable or disable the command system.", True, bool),																	#2
 	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),																#3
 	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),											#4
-	Setting("WebPort", "Webpanel port.", 8080, int)																								#5
+	Setting("WebPort", "Webpanel port.", 8080, int),																							#5
+	Setting("BoldVMText", "Set Visualiser text bold.", False, bool)																				#6
 ]
 
 #Funcs
@@ -87,7 +88,7 @@ if __name__ == "__main__":
 	else:
 		loadMain()
 
-	#I was being a dumbass here. smh.
+	#I was being a dumb here. smh.
 	setTestMode(bool(settings[0].getValue()))
 	time.sleep(0.1)
 

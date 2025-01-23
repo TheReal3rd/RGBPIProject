@@ -1,4 +1,6 @@
 from Settings.Setting import *
+from Main import *
+
 #Just a template Mode.
 class Mode():
     _name = None
@@ -33,6 +35,9 @@ class Mode():
         return self.settings
 
     def loadLibs(self):
+        if isTestMode():
+            return
+            
         if not self._fixtureType == None:
             match(self._fixtureType):
                 case "WSLEDStrip":

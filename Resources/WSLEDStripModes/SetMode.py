@@ -1,6 +1,5 @@
 from Resources.BlankMode import *
 from Settings.Setting import *
-from rpi_ws281x import Color
 import time
 
 #Set the strip to a solid colour. Not fully working.
