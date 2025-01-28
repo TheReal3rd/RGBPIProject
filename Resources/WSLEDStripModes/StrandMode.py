@@ -5,26 +5,36 @@ import time
 #Send a pulse of coloured light along the strip. Not fully working.
 class StrandMode(Mode):
 
+    _indexOffset: int = -1
+    _finished: bool = False
+
     def __init__(self):
         self._name = "Strand"
         self._fixtureType = "WSLEDStrip"
         self.settings = [
-            Setting("Brightness", "Sets the Brightness levels.", 255, int)
+            Setting("Brightness", "Sets the Brightness levels.", 255, int),
+            Setting("Width", "The lighting blob size.", 5, int)
         ]
+        self._indexOffset = 0
+        self._finished = False
 
     def update(self, fixture):
-        pass
+        if not self._finished:
+            for i in range(fixture.getNumPixels()):
+                fixture.setPixelColour(i, 0, 0, 0, 0)
+                fixture.setBrightness(255)
 
-
-
-
-
-        #if not self._finished:
-        #    for i in range(fixture.getNumPixels()):
-        #        fixture.setPixelColour(i, self.settings[0].getValue(), self.settings[1].getValue(), self.settings[2].getValue(), 0)
-        #        fixture.setBrightness(self.settings[3].getValue())
-        #    fixture.show()
+            for i in range(self._indexOffset, clamp(self._indexOffset + self.settings[1].getValue(), 0, fixture.getNumPixels())):
+                fixture.setPixelColour(i, 255,255,255, 0)
+                fixture.setBrightness(255)
+            fixture.show()
                  
-        #    self._finished = True
+            self._finished = True
+
+        if self._finished:
+            self._indexOffset += 1
+            if self._indexOffset >= fixture.getNumPixels():
+                self._indexOffset = 0
+            self._finished = False
 
         

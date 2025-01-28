@@ -18,6 +18,7 @@ class VisualiserManagerPygame(threading.Thread):
     _dataManager = None
 
     _screen = None
+    _screenSize = None
 
     _currentScreen = None
     _changingScreen = False
@@ -41,6 +42,7 @@ class VisualiserManagerPygame(threading.Thread):
         self._missingFixImg = pygame.image.load("Visualiser/Textures/MissingFixture.png")
         self._screen = pygame.display.set_mode([1280, 720])#TODO add screen size checks and possible fallback options such as resize elements and more.
         screen = self._screen
+        self._screenSize = screen.get_size()
         from Main import getVersion
         pygame.display.set_caption("RGB Controller Visualiser Vers: {version}".format(version=getVersion()))
 
@@ -103,3 +105,7 @@ class VisualiserManagerPygame(threading.Thread):
     def changeScreen(self, newScreen):
         self._changingScreen = True
         self._newScreen = newScreen
+
+    def getScreenSize(self):
+        return self._screenSize
+
