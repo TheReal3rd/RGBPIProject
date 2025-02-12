@@ -18,17 +18,15 @@ import os.path
 import json
 import time
 
-global testMode
-
 version = 1.1
-testMode = True
+testMode = os.path.isfile("test.mode")
 
 settings = [
-	Setting("TestMode", "Puts the software in a test state where it won't send any GPIO commands. For use on a standard computer.", True, bool),#0
+	Setting("TestMode", "Puts the software in a test state where it won't send any GPIO commands. For use on a standard computer.", True, bool),#0 TODO Find a new use for this setting.
 	Setting("UseVisualiser", "Allow the program to create a visualiser window. This is used for test and debugging.", True, bool),  			#1
 	Setting("UseCommand", "Enable or disable the command system.", True, bool),																	#2
 	Setting("UseWebpanel", "Enable or disable the web panel system.", True, bool),																#3
-	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "rgbpi.third.net", str),											#4
+	Setting("WebAddress", "Webpanel address this has to be the IP or Domain.", "localhost", str),	    										#4
 	Setting("WebPort", "Webpanel port.", 8080, int),																							#5
 	Setting("BoldVMText", "Set Visualiser text bold.", False, bool)																				#6
 ]
@@ -73,12 +71,7 @@ def getVersion():
 	return version
 
 def isTestMode():
-	global testMode
 	return testMode
-
-def setTestMode(state):
-	global testMode
-	testMode = state
 
 if __name__ == "__main__":
 	#Config Load / Save
@@ -87,10 +80,6 @@ if __name__ == "__main__":
 		saveMain()
 	else:
 		loadMain()
-
-	#I was being a dumb here. smh.
-	setTestMode(bool(settings[0].getValue()))
-	time.sleep(0.1)
 
 	if not isTestMode():
 		os.system("sudo pigpiod")

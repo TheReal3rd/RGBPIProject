@@ -16,10 +16,11 @@ class NewFixScreen(ScreenBase):
         self.register(ButtonComponent("Back", (5, 695), (40, 40), goBack))
 
         screenSize = vmInstance.getScreenSize()
-        tempLabel = LabelComponent("TEST", ((screenSize[0] / 2), 10), (40,40))
-        tempLabel.setBackground(False)
+        title = LabelComponent("New Fixture", ((screenSize[0] / 2), 10), (40,40))
+        title.setBackground(False)
+        self.register(title)
 
-        self.register(tempLabel)
+        self.register(StringInputComponent("FixtureName", ((screenSize[0] / 2), 40), (40,40), ""))
 
     def render(self, vmInstance, pygame, screen, font):
         mousePos = pygame.mouse.get_pos()
