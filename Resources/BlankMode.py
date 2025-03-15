@@ -41,4 +41,4 @@ class Mode():
         if not self._fixtureType == None:
             match(self._fixtureType):
                 case "WSLEDStrip":
-                    from rpi_ws281x import Color
+                    from rpi_ws281x import PixelStrip, Color

@@ -30,11 +30,11 @@ class LabelComponent(ComponentBase):#TODO add multiline support.
                 colourOutline = self._ButtonOutlineColourHover
 
             outLineRect = pygame.Rect(self._position[0], self._position[1], self._size[0], self._size[1])
-            pygame.Rect.inflate_ip(outLineRect, 6,6)
+            pygame.Rect.inflate_ip(outLineRect, 6, 6)
             pygame.draw.rect(screen, colourOutline, outLineRect)
 
             buttonRect = pygame.Rect(self._position[0], self._position[1], self._size[0], self._size[1])
-            pygame.Rect.inflate_ip(buttonRect, 4,4)
+            pygame.Rect.inflate_ip(buttonRect, 4, 4)
             pygame.draw.rect(screen, colour, buttonRect)
 
         #Label Draw

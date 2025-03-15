@@ -4,6 +4,11 @@ from Main import *
 import copy
 import time
 
+if not isTestMode():
+    from rpi_ws281x import PixelStrip, Color
+
+#TODO known issue the program breaks when on raspberry pi. Without the import being here. Try finding a fix that works consistantly.
+
 class WSLEDStripFixture(FixtureBase):
 
     #Adjust these

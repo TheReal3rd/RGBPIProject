@@ -3,7 +3,7 @@ from Resources.Utils import *
 
 class HorScrollBarComponent(ComponentBase):
 
-    _paddingAmount = 5
+    #_paddingAmount = 5
 
     _ButtonColour = (45, 45, 45)
     _ButtonColourHover = (60, 60, 60)
@@ -67,8 +67,8 @@ class HorScrollBarComponent(ComponentBase):
 
     # Setters
 
-    def setPaddingAmount(self, newPadAmount):
-        self._paddingAmount = newPadAmount
+    #def setPaddingAmount(self, newPadAmount):
+    #    self._paddingAmount = newPadAmount
 
     def setScrollUpdateCallback(self, newCallback):
         self._scrollUpdateCallBack = newCallback

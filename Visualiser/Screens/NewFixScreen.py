@@ -3,6 +3,7 @@ from Visualiser.Components.ButtonComponent import *
 from Visualiser.Components.StringInputComponent import *
 from Visualiser.Components.HorizontalScrollBarComponent import *
 from Visualiser.Components.LabelComponent import *
+from Visualiser.Components.DropDownComponent import *
 from Resources.Utils import keysWithinDictCheck, fromPercentage
 
 class NewFixScreen(ScreenBase):
@@ -21,6 +22,8 @@ class NewFixScreen(ScreenBase):
         self.register(title)
 
         self.register(StringInputComponent("FixtureName", ((screenSize[0] / 2), 40), (40,40), ""))
+
+        self.register(DropDownComponent("FixtureType", ((screenSize[0] / 2), 80), (40,40), ["A", "B", "C"], 0))
 
     def render(self, vmInstance, pygame, screen, font):
         mousePos = pygame.mouse.get_pos()
